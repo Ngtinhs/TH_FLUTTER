@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "721603480232",
+    "project_id": "fir-notification-99758",
+    "storage_bucket": "fir-notification-99758.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721603480232:android:e3c12317907c328107d09d",
+        "android_client_info": {
+          "package_name": "com.example.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721603480232-8md5odr1ducfc1u8q42063n2q910bh7e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcu0QCPLeKXHXjyqW8PpKUHL9LtV38hgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721603480232-8md5odr1ducfc1u8q42063n2q910bh7e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
