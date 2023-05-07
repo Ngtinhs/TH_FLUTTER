@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+const cors = require('cors');
 
 var foods = require('./routes/food');
 var categories = require('./routes/category');
@@ -17,6 +18,7 @@ app.use(express.static('image'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 
 //
 mongoose
@@ -40,4 +42,8 @@ app.use('/api/users', users);
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Server is working on http://localhost:${port}`);
+});
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  next();
 });
