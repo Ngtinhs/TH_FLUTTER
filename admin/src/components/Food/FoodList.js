@@ -58,16 +58,27 @@ const FoodList = () => {
             });
     };
 
-    const handleSaveFood = () => {
-        const { title, description, price } = selectedFood;
 
-        if (title && description && price) {
+    const handleSaveFood = () => {
+        const { title, description, price, image } = selectedFood;
+
+        if (title && description && price && image) {
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('price', price);
+            formData.append('image', image);
+
             if (isEditing) {
                 // Perform update logic
                 axios
-                    .put(`http://localhost:8000/api/food/${selectedFood._id}`, selectedFood)
+                    .put(`http://localhost:8000/api/food/${selectedFood._id}`, formData)
                     .then((response) => {
-                        setFoods(foods.map((food) => (food._id === selectedFood._id ? selectedFood : food)));
+                        const updatedFood = {
+                            ...selectedFood,
+                            image: response.data.image, // Update the image field with the returned image path
+                        };
+                        setFoods(foods.map((food) => (food._id === selectedFood._id ? updatedFood : food)));
                         toast.success('Cập nhật món ăn thành công');
                         setShowModal(false);
                     })
@@ -78,9 +89,13 @@ const FoodList = () => {
             } else {
                 // Perform add logic
                 axios
-                    .post('http://localhost:8000/api/food', selectedFood)
+                    .post('http://localhost:8000/api/food', formData)
                     .then((response) => {
-                        setFoods([...foods, response.data]);
+                        const newFood = {
+                            ...response.data,
+                            image: `public/images/${response.data.image}`, // Update the image field with the returned image path
+                        };
+                        setFoods([...foods, newFood]);
                         toast.success('Thêm món ăn thành công');
                         setShowModal(false);
                     })
@@ -90,9 +105,10 @@ const FoodList = () => {
                     });
             }
         } else {
-            toast.error('Vui lòng điền đầy đủ thông tin món ăn');
+            toast.error('Vui lòng điền đầy đủ thông tin món ăn và chọn ảnh');
         }
     };
+
 
     return (
         <div>
@@ -106,7 +122,7 @@ const FoodList = () => {
                         <br />
                         <strong>Description:</strong> {food.description}
                         <br />
-                        <strong>Images:</strong> <img src={`http://localhost:3000/${food.image}`} alt={food.title} style={{ width: '60px', height: '60px' }} />
+                        <strong>Images:</strong> <img src={`http://localhost:3000/asset/foods/${food.image}`} alt={food.title} style={{ width: '60px', height: '60px' }} />
                         <br />
                         <br />
                         <strong>Price:</strong> {food.price}
@@ -154,11 +170,11 @@ const FoodList = () => {
                             />
                             <label htmlFor="image">Images:</label>
                             <input
-                                type="text"
+                                type="file"
                                 id="image"
-                                value={selectedFood ? selectedFood.image : ''}
-                                onChange={(e) => setSelectedFood({ ...selectedFood, image: e.target.value })}
+                                onChange={(e) => setSelectedFood({ ...selectedFood, image: e.target.files[0] })}
                             />
+
                             <label htmlFor="price">Price:</label>
                             <input
                                 type="text"

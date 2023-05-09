@@ -8,12 +8,28 @@ const OrderList = () => {
         axios.get('http://localhost:8000/api/orders')
             .then(response => {
                 // Cập nhật state 'orders' với dữ liệu đơn hàng từ API
-                setOrders(response.data.orders); // Truy cập vào thuộc tính 'orders'
+                setOrders(response.data.orders);
             })
             .catch(error => {
                 console.error('Error fetching order list:', error);
             });
     }, []);
+
+    // Hàm xác nhận xóa đơn hàng
+    const handleDelete = (orderId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this order?");
+        if (confirmDelete) {
+            axios.delete(`http://localhost:8000/api/orders/${orderId}`)
+                .then(response => {
+                    // Xóa đơn hàng khỏi danh sách
+                    const updatedOrders = orders.filter(order => order._id !== orderId);
+                    setOrders(updatedOrders);
+                })
+                .catch(error => {
+                    console.error(`Error deleting order ${orderId}:`, error);
+                });
+        }
+    }
 
     return (
         <div>
@@ -39,6 +55,7 @@ const OrderList = () => {
                             ) : (
                                 <p>No order details available.</p>
                             )}
+                            <button onClick={() => handleDelete(order._id)}>Delete Order</button>
                         </li>
                     ))
                 ) : (

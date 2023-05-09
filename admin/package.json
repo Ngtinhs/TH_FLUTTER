@@ -9,13 +9,18 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "cors": "^2.8.5",
+    "crypto-browserify": "^3.12.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
+    "react-data-export": "^0.6.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-export-excel": "^0.5.3",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.2",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

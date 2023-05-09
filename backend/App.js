@@ -20,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 //
 mongoose
   .connect('mongodb+srv://tinh:tinh@cluster0.j5u2kj8.mongodb.net/?retryWrites=true&w=majority', {

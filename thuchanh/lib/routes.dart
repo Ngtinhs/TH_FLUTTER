@@ -21,6 +21,6 @@ final Map<String, WidgetBuilder> routes = {
   CartPage.routeName: (context) => CartPage(),
   SearchPage.routeName: (context) => SearchPage(),
   ListUserPage.routeName: (context) => ListUserPage(),
-  ListProductPage.routeName: (context) => ListProductPage(),
+  FoodList.routeName: (context) => FoodList(),
   ListOrderPage.routeName: (context) => ListOrderPage(),
 };

@@ -2,12 +2,15 @@ const Food = require('../models/food.model');
 const express = require('express');
 var router = express.Router();
 const multer = require('multer');
+const path = require('path');
+
 const storage = multer.diskStorage({
-  destination: './image',
+  destination: path.join(__dirname, '../../thuchanh/asset/foods'), // Đường dẫn tuyệt đối của thư mục lưu trữ hình ảnh
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
+
 const upload = multer({ storage });
 
 router.get('/', (req, res) => {
@@ -22,27 +25,10 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
-  const food = new Food({
-    title: req.body.title,
-    description: req.body.description,
-    image: req.body.image,
-    price: req.body.price,
-  });
-  food
-    .save()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((error) => {
-      res.status(500).send({
-        message: error.message,
-      });
-    });
-});
 router.post('/', upload.single('image'), (req, res) => {
   const { title, description, price } = req.body;
-  const image = req.file ? req.file.filename : '';
+  const image = req.file ? 'asset/foods/' + req.file.filename : '';
+
 
   const food = new Food({
     title,
@@ -62,7 +48,6 @@ router.post('/', upload.single('image'), (req, res) => {
       });
     });
 });
-
 
 router.put('/:id', (req, res) => {
   Food.findByIdAndUpdate(

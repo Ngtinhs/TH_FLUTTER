@@ -5,11 +5,55 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:demo/model/products.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckOutCart extends StatelessWidget {
   final double sum;
   final List<Products> products;
-  const CheckOutCart({super.key, required this.sum, required this.products});
+  const CheckOutCart({Key? key, required this.sum, required this.products})
+      : super(key: key);
+
+  Future<void> _checkOut(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+
+    var data = {
+      "username": username,
+      // "address": "16 Chử đồng tử",
+      "orderDetails": products.map((e) => ProductUtils.toJson(e)).toList(),
+      "status": "unpaid",
+      "total": sum
+    };
+
+    final url = Uri.parse('http://192.168.15.109:8000/api/orders/checkout');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Đặt hàng thành công!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.pushNamedAndRemoveUntil(
+          context, HomePage.routeName, (route) => false);
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Đã xảy ra lỗi trong quá trình đặt hàng',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +63,12 @@ class CheckOutCart extends StatelessWidget {
         Expanded(
           child: TextButton(
             style: ButtonStyle(
-              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0.0),
                   side: const BorderSide(color: Colors.green))),
-              backgroundColor: const MaterialStatePropertyAll(Colors.white),
-              side: const MaterialStatePropertyAll(
-                  BorderSide(color: Colors.green)),
-              iconSize: const MaterialStatePropertyAll(
-                50,
-              ),
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+              side: MaterialStateProperty.all(BorderSide(color: Colors.green)),
+              padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
             ),
             onPressed: () {},
             child: Text(
@@ -41,10 +82,10 @@ class CheckOutCart extends StatelessWidget {
         Expanded(
           child: TextButton(
             style: ButtonStyle(
-              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0.0))),
-              side: const MaterialStatePropertyAll(
-                  BorderSide(color: Colors.green)),
+              side: MaterialStateProperty.all(BorderSide(color: Colors.green)),
+              padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
             ),
             onPressed: () {
               _checkOut(context);
@@ -56,55 +97,15 @@ class CheckOutCart extends StatelessWidget {
       ],
     );
   }
+}
 
-  void _checkOut(BuildContext context) {
-    print('checking out');
-    postRequest();
-    Fluttertoast.showToast(
-        msg: "Checkout to cart",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
-    Cart cart = Cart();
-    cart.clearProductsInCart();
-    Navigator.pushNamedAndRemoveUntil(
-        context, HomePage.routeName, (Route<dynamic> route) => false);
-  }
-
-  Future<void> postRequest() async {
-    var url = 'http://10.0.2.2:8000/api/orders/checkout';
-    var data = {
-      "username": "minhtritt01@gmail.com",
-      "address": "260/17 binh quoi",
-      "orderDetails": products.map((e) => toJson(e)).toList(),
-      "status": "unpaid",
-      "total": sum
-    };
-    var body = json.encode(data);
-    var response = await http.post(Uri.parse(url),
-        body: body, headers: {'Content-Type': 'application/json'});
-    print(response.body);
-  }
-
-  Map<String, dynamic> toJson(Products product) {
+class ProductUtils {
+  static Map<String, dynamic> toJson(Products product) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['title'] = product.title;
     data['image'] = product.image;
     data['price'] = product.price;
     data['description'] = product.description;
     return data;
-  }
-
-  Products_fromJson(Map<String, dynamic> item) {
-    return Products(
-      description: item['description'],
-      title: item['title'],
-      image: item['image'],
-      price: double.parse(item['price']),
-      id: item['_id'],
-    );
   }
 }

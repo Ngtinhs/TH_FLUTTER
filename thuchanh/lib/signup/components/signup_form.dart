@@ -2,6 +2,7 @@ import 'package:demo/model/user.dart';
 import 'package:demo/model/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart  ';
+
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
 

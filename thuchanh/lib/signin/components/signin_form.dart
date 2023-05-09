@@ -33,12 +33,13 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   _getData() async {
-    // Lấy dữ liệu từ SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('username')!.isNotEmpty) {
-      username.text = prefs.getString('username')!;
-      password.text = prefs.getString('password')!;
-      _value = prefs.getBool('check')!;
+    if (prefs.getString('username')?.isNotEmpty ?? false) {
+      setState(() {
+        username.text = prefs.getString('username')!;
+        password.text = prefs.getString('password')!;
+        _value = prefs.getBool('check') ?? false;
+      });
     }
   }
 
@@ -116,7 +117,6 @@ class _SignInFormState extends State<SignInForm> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            // Gửi yêu cầu đăng nhập đến server
                             final url = Uri.parse(
                                 'http://192.168.15.109:8000/api/users/login');
                             final response = await http.post(
@@ -127,17 +127,13 @@ class _SignInFormState extends State<SignInForm> {
                                 'password': password.text,
                               }),
                             );
-
                             if (response.statusCode == 200) {
-                              // Đăng nhập thành công
-                              // Lưu thông tin người dùng vào SharedPreferences
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setString('username', username.text);
                               prefs.setString('password', password.text);
                               prefs.setBool('check', _value);
 
-                              // Kiểm tra role của người dùng
                               var userData = json.decode(response.body);
                               var role = userData['role'];
                               print('Check role: $role');
@@ -151,7 +147,6 @@ class _SignInFormState extends State<SignInForm> {
                                     context, HomePage.routeName);
                               }
                             } else if (response.statusCode == 401) {
-                              // Tên người dùng hoặc mật khẩu không chính xác
                               final responseData = json.decode(response.body);
                               final message = responseData['message'];
 
@@ -164,7 +159,6 @@ class _SignInFormState extends State<SignInForm> {
                                 fontSize: 16.0,
                               );
                             } else {
-                              // Xảy ra lỗi trong quá trình đăng nhập
                               Fluttertoast.showToast(
                                 msg: 'Đã xảy ra lỗi trong quá trình đăng nhập',
                                 toastLength: Toast.LENGTH_SHORT,
@@ -195,12 +189,10 @@ class _SignInFormState extends State<SignInForm> {
                         ),
                       ),
                     ),
-                    // ...
                   ],
                 ),
               ),
             ),
-            // ...
           ],
         ),
       ),

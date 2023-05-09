@@ -18,7 +18,7 @@ class AdminPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, ListProductPage.routeName);
+                Navigator.pushNamed(context, FoodList.routeName);
               },
               child: Text("Quản lý sản phẩm"),
             ),

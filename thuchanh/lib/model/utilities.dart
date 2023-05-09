@@ -5,7 +5,7 @@ import 'package:quiver/strings.dart';
 import 'package:http/http.dart' as http;
 
 class Utilities {
-  String url = "http://10.0.2.2:8000/api/food";
+  String url = "http://192.168.15.109:8000/api/food";
 
   static List<Products> result = [];
 
