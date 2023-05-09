@@ -35,6 +35,11 @@ mongoose
   });
 
 //
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  next();
+});
+
 app.use('/api/food', foods);
 app.use('/api/categories', categories);
 app.use('/api/orders', orders);
@@ -43,7 +48,4 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Server is working on http://localhost:${port}`);
 });
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  next();
-});
+

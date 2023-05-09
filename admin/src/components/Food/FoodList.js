@@ -3,14 +3,12 @@ import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDropzone } from 'react-dropzone';
 
 const FoodList = () => {
     const [foods, setFoods] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
     const [selectedFoodToDelete, setSelectedFoodToDelete] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
@@ -25,7 +23,12 @@ const FoodList = () => {
     }, []);
 
     const handleAddFood = () => {
-        setSelectedFood(null);
+        setSelectedFood({
+            title: '',
+            description: '',
+            price: '',
+            images: [],
+        });
         setIsEditing(false);
         setShowModal(true);
     };
@@ -58,21 +61,11 @@ const FoodList = () => {
     const handleSaveFood = () => {
         const { title, description, price } = selectedFood;
 
-        if (title && description && price && selectedImage) {
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('description', description);
-            formData.append('price', price);
-            formData.append('image', selectedImage);
-
-            if (selectedFood._id) {
+        if (title && description && price) {
+            if (isEditing) {
                 // Perform update logic
                 axios
-                    .put(`http://localhost:8000/api/food/${selectedFood._id}`, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    })
+                    .put(`http://localhost:8000/api/food/${selectedFood._id}`, selectedFood)
                     .then((response) => {
                         setFoods(foods.map((food) => (food._id === selectedFood._id ? selectedFood : food)));
                         toast.success('Cập nhật món ăn thành công');
@@ -85,11 +78,7 @@ const FoodList = () => {
             } else {
                 // Perform add logic
                 axios
-                    .post('http://localhost:8000/api/food', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    })
+                    .post('http://localhost:8000/api/food', selectedFood)
                     .then((response) => {
                         setFoods([...foods, response.data]);
                         toast.success('Thêm món ăn thành công');
@@ -104,12 +93,6 @@ const FoodList = () => {
             toast.error('Vui lòng điền đầy đủ thông tin món ăn');
         }
     };
-
-    const handleImageDrop = (acceptedFiles) => {
-        setSelectedImage(acceptedFiles[0]);
-    };
-
-    const { getRootProps, getInputProps } = useDropzone({ onDrop: handleImageDrop });
 
     return (
         <div>
@@ -169,18 +152,13 @@ const FoodList = () => {
                                 value={selectedFood ? selectedFood.description : ''}
                                 onChange={(e) => setSelectedFood({ ...selectedFood, description: e.target.value })}
                             />
-                            {isEditing && (
-                                <div {...getRootProps()}>
-                                    <input {...getInputProps()} />
-                                    <p>Kéo và thả hoặc nhấp để chọn ảnh</p>
-                                </div>
-                            )}
-                            {selectedImage && (
-                                <div>
-                                    <p>Ảnh đã chọn:</p>
-                                    <img src={URL.createObjectURL(selectedImage)} alt="Selected" style={{ width: '100px', height: '100px' }} />
-                                </div>
-                            )}
+                            <label htmlFor="image">Images:</label>
+                            <input
+                                type="text"
+                                id="image"
+                                value={selectedFood ? selectedFood.image : ''}
+                                onChange={(e) => setSelectedFood({ ...selectedFood, image: e.target.value })}
+                            />
                             <label htmlFor="price">Price:</label>
                             <input
                                 type="text"

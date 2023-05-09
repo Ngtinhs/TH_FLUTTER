@@ -1,6 +1,14 @@
 const Food = require('../models/food.model');
 const express = require('express');
 var router = express.Router();
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: './image',
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
 
 router.get('/', (req, res) => {
   Food.find()
@@ -32,12 +40,17 @@ router.post('/', (req, res) => {
       });
     });
 });
-router.post('/', (req, res) => {
+router.post('/', upload.single('image'), (req, res) => {
+  const { title, description, price } = req.body;
+  const image = req.file ? req.file.filename : '';
+
   const food = new Food({
-    title: req.body.title,
-    description: req.body.description,
-    price: req.body.price,
+    title,
+    description,
+    image,
+    price,
   });
+
   food
     .save()
     .then((data) => {
@@ -49,6 +62,7 @@ router.post('/', (req, res) => {
       });
     });
 });
+
 
 router.put('/:id', (req, res) => {
   Food.findByIdAndUpdate(
