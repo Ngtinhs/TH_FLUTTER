@@ -18,12 +18,12 @@ class Body extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 200,
               child: Image.asset(product.image)),
-          const SizedBox(
+          SizedBox(
             height: 20,
           ),
           Expanded(
-            flex: 1,
             child: Text("Description: ${product.description}"),
+            flex: 1,
           ),
           AddProductToCart(
             product: product,

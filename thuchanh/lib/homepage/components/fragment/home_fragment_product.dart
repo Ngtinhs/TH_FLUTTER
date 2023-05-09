@@ -86,16 +86,6 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String imageUrl = product.image ?? '';
-
-    // check if the imageUrl is a URL or not
-    if (!RegExp('^(http|https)://.*').hasMatch(imageUrl)) {
-      // extract the URL from the string
-      imageUrl =
-          RegExp(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
-                  .stringMatch(imageUrl) ??
-              '';
-    }
     return GestureDetector(
       onTap: () {
         Utilities.result.add(product);

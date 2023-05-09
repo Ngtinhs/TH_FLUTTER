@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
 
-// Đăng nhập
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -11,7 +10,7 @@ router.post('/login', async (req, res) => {
 
         if (user) {
             // Người dùng tồn tại và đăng nhập thành công
-            res.status(200).json({ message: 'Đăng nhập thành công' });
+            res.status(200).json({ message: 'Đăng nhập thành công', role: user.role });
         } else {
             // Người dùng không tồn tại hoặc thông tin đăng nhập không chính xác
             res.status(401).json({ message: 'Tên người dùng hoặc mật khẩu không chính xác' });
@@ -21,18 +20,21 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Đăng ký
+
 router.post('/register', async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, role } = req.body;
 
         const existingUser = await User.findOne({ username });
 
         if (existingUser) {
-            // Người dùng đã tồn tại
             res.status(409).json({ message: 'Người dùng đã tồn tại' });
         } else {
-            const newUser = new User({ username, password });
+            const newUser = new User({
+                username,
+                password,
+                role: role ? role : 'customer' // Nếu role được cung cấp thì sử dụng giá trị đó, nếu không thì mặc định là 'customer'
+            });
             await newUser.save();
             res.status(201).json({ message: 'Đăng ký thành công' });
         }
@@ -40,6 +42,8 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: 'Đã xảy ra lỗi trong quá trình đăng ký' });
     }
 });
+
+
 // Lấy danh sách người dùng
 router.get('/', async (req, res) => {
     try {

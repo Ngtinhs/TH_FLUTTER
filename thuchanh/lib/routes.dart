@@ -6,13 +6,21 @@ import 'package:demo/signin_form/splashpage.dart';
 import 'package:demo/signup/signup_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'homepage.dart';
+import 'Admin/adminpage.dart';
+import './Admin/pages/list_user_page.dart';
+import './Admin/pages/list_product_page.dart';
+import './Admin/pages/list_order_page.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  SplashPage.routeName: (context) => const SplashPage(),
-  SigninPage.routeName: (context) => const SigninPage(),
-  SignUpPage.routeName: (context) => const SignUpPage(),
+  SplashPage.routeName: (context) => SplashPage(),
+  SigninPage.routeName: (context) => SigninPage(),
+  SignUpPage.routeName: (context) => SignUpPage(),
   HomePage.routeName: (context) => HomePage(),
-  ProductPage.routeName: (context) => const ProductPage(),
-  CartPage.routeName: (context) => const CartPage(),
-  SearchPage.routeName: (context) => const SearchPage(),
+  AdminPage.routeName: (context) => AdminPage(),
+  ProductPage.routeName: (context) => ProductPage(),
+  CartPage.routeName: (context) => CartPage(),
+  SearchPage.routeName: (context) => SearchPage(),
+  ListUserPage.routeName: (context) => ListUserPage(),
+  ListProductPage.routeName: (context) => ListProductPage(),
+  ListOrderPage.routeName: (context) => ListOrderPage(),
 };

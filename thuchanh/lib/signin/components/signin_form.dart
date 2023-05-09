@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../homepage.dart';
-import '../../model/user.dart';
 import '../../model/utilities.dart';
-import '../../signup/signup_page.dart';
+import '../../Admin/adminpage.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({Key? key}) : super(key: key);
@@ -120,7 +118,7 @@ class _SignInFormState extends State<SignInForm> {
                           if (_formKey.currentState!.validate()) {
                             // Gửi yêu cầu đăng nhập đến server
                             final url = Uri.parse(
-                                'http://localhost:8000/api/users/login');
+                                'http://192.168.15.109:8000/api/users/login');
                             final response = await http.post(
                               url,
                               headers: {'Content-Type': 'application/json'},
@@ -139,7 +137,19 @@ class _SignInFormState extends State<SignInForm> {
                               prefs.setString('password', password.text);
                               prefs.setBool('check', _value);
 
-                              Navigator.pushNamed(context, HomePage.routeName);
+                              // Kiểm tra role của người dùng
+                              var userData = json.decode(response.body);
+                              var role = userData['role'];
+                              print('Check role: $role');
+                              print('Check response: ${response.body}');
+
+                              if (role == 'admin') {
+                                Navigator.pushNamed(
+                                    context, AdminPage.routeName);
+                              } else {
+                                Navigator.pushNamed(
+                                    context, HomePage.routeName);
+                              }
                             } else if (response.statusCode == 401) {
                               // Tên người dùng hoặc mật khẩu không chính xác
                               final responseData = json.decode(response.body);

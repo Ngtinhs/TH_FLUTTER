@@ -3,10 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-rou
 import OrderList from './components/OderFood/OrderList';
 import FoodList from './components/Food/FoodList';
 import UserList from './components/User/UserList';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   return (
     <Router>
+      <ToastContainer />
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <Link to="/" className="navbar-brand">Admin Page</Link>

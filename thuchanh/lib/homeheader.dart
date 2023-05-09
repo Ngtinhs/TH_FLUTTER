@@ -18,7 +18,7 @@ class HomeHeader extends StatelessWidget {
             decoration: const InputDecoration(
               filled: true,
               fillColor: Colors.white,
-              hintText: "Search Product",
+              hintText: "Tìm kiếm sản phẩm",
               prefixIcon: Icon(Icons.search),
             ),
           ),

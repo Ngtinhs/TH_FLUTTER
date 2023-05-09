@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class Products {
   String id;
   String title;
@@ -13,9 +11,6 @@ class Products {
       required this.description,
       required this.image,
       required this.price});
-  Widget getImageWidget() {
-    return Image.network(image);
-  }
 
   static List<Products> init() {
     List<Products> data = [

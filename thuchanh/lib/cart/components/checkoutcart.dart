@@ -77,8 +77,8 @@ class CheckOutCart extends StatelessWidget {
   Future<void> postRequest() async {
     var url = 'http://10.0.2.2:8000/api/orders/checkout';
     var data = {
-      "username": "Nguyenvanductinh@gmail.com",
-      "address": "16 Chử Đồng Tử",
+      "username": "minhtritt01@gmail.com",
+      "address": "260/17 binh quoi",
       "orderDetails": products.map((e) => toJson(e)).toList(),
       "status": "unpaid",
       "total": sum

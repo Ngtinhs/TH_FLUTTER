@@ -19,9 +19,9 @@ class ProductPage extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
         ),
-        title: Text("Details"),
+        title: const Text("Details"),
       ),
       body: Body(product: arguments!.product),
     );

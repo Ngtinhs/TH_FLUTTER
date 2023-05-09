@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../homeheader.dart';
 import '../../menuheader.dart';
 import '../../model/utilities.dart';
@@ -21,7 +22,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     List<Widget> screen = [
-      const HomeDetail(),
+      HomeDetail(),
       FavoriteDetail(Utilities.result),
       const NotificationDetail(),
       const AccountDetail()
