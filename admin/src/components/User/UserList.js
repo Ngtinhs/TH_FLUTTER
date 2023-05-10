@@ -154,10 +154,6 @@ const UserList = () => {
                                     placeholder="Enter password"
                                 />
                             </FormGroup>
-
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
                         </Form>
                     </div>
                 </Modal.Body>

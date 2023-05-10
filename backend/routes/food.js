@@ -15,7 +15,7 @@ const upload = multer({ storage });
 
 router.get('/', (req, res) => {
   Food.find()
-    .populate('category') // Thêm populate để lấy thông tin về danh mục
+    .populate('category', 'title')// Thêm populate để lấy thông tin về danh mục
     .then((data) => {
       res.send({ food: data });
     })
