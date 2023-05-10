@@ -38,7 +38,8 @@ router.get('/:id', (req, res) => {
         });
       }
 
-      Food.find({ category: categoryId }) // Thay `categoryId` bằng `category: categoryId`
+      Food.find({ category: categoryId })
+        .populate('category', 'title') // Thêm populate để lấy thông tin về danh mục
         .then((foods) => {
           res.send({
             category,
@@ -57,6 +58,7 @@ router.get('/:id', (req, res) => {
       });
     });
 });
+
 
 router.post('/', upload.single('image'), (req, res) => {
   const { title } = req.body;

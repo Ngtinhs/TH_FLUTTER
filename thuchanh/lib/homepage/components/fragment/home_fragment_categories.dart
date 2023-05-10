@@ -1,16 +1,26 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import '../../../homepage/components/product_in_category.dart';
 
 class Categories {
+  final String id;
   final String image;
 
-  Categories({required this.image});
+  Categories({required this.id, required this.image});
 
   factory Categories.fromJson(Map<String, dynamic> json) {
-    return Categories(
-      image: json['image'],
-    );
+    final id = json['_id'];
+    final image = json['image'];
+
+    if (id != null && image != null) {
+      return Categories(
+        id: id,
+        image: image,
+      );
+    } else {
+      throw Exception('Invalid category data');
+    }
   }
 }
 
@@ -19,7 +29,8 @@ Future<List<Categories>> fetchCategories() async {
       await http.get(Uri.parse('http://192.168.15.109:8000/api/categories'));
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
-    return (jsonData['categories'] as List)
+    final categoriesData = jsonData['categories'] as List<dynamic>;
+    return categoriesData
         .map((categoryData) => Categories.fromJson(categoryData))
         .toList();
   } else {
@@ -107,11 +118,21 @@ class CategoriesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 150,
-      padding: const EdgeInsets.all(5),
-      child: Image.asset(category.image),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FoodListPage(categoryId: category.id),
+          ),
+        );
+      },
+      child: Container(
+        width: 150,
+        height: 150,
+        padding: const EdgeInsets.all(5),
+        child: Image.asset(category.image),
+      ),
     );
   }
 }
