@@ -5,6 +5,7 @@ import FoodList from './components/Food/FoodList';
 import UserList from './components/User/UserList';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import CategoriesList from './components/Category/Categories';
 
 const App = () => {
   return (
@@ -27,6 +28,9 @@ const App = () => {
               <li className="nav-item">
                 <NavLink to="/orders" className="nav-link" activeClassName="active">Order Management</NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink to="/Categories" className="nav-link" activeClassName="active">Cate Management</NavLink>
+              </li>
             </ul>
           </div>
         </nav>
@@ -43,6 +47,9 @@ const App = () => {
               <li className="list-group-item">
                 <Link to="/orders" className="text-decoration-none text-dark">Order List</Link>
               </li>
+              <li className="list-group-item">
+                <Link to="/Categories" className="text-decoration-none text-dark">Cate List</Link>
+              </li>
             </ul>
           </div>
 
@@ -51,6 +58,7 @@ const App = () => {
               <Route path="/products" element={<FoodList />} />
               <Route path="/users" element={<UserList />} />
               <Route path="/orders" element={<OrderList />} />
+              <Route path="/Categories" element={<CategoriesList />} />
             </Routes>
           </div>
         </div>

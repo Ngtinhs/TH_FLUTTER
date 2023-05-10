@@ -15,6 +15,7 @@ const upload = multer({ storage });
 
 router.get('/', (req, res) => {
   Food.find()
+    .populate('category') // Thêm populate để lấy thông tin về danh mục
     .then((data) => {
       res.send({ food: data });
     })
@@ -26,7 +27,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', upload.single('image'), (req, res) => {
-  const { title, description, price, quantity } = req.body;
+  const { title, description, price, quantity, categoryId } = req.body;
   const image = req.file ? 'asset/foods/' + req.file.filename : '';
 
   const food = new Food({
@@ -34,7 +35,8 @@ router.post('/', upload.single('image'), (req, res) => {
     description,
     image,
     price,
-    quantity
+    quantity,
+    category: categoryId, // Thêm category ID vào food
   });
 
   food
@@ -50,7 +52,7 @@ router.post('/', upload.single('image'), (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  const { title, description, price, quantity } = req.body;
+  const { title, description, price, quantity, categoryId } = req.body;
 
   Food.findByIdAndUpdate(
     req.params.id,
@@ -59,6 +61,7 @@ router.put('/:id', (req, res) => {
       description,
       price,
       quantity,
+      category: categoryId, // Cập nhật category ID
     },
     { new: true }
   )
