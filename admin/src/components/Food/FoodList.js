@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 const FoodList = () => {
     const [foods, setFoods] = useState([]);
@@ -12,6 +13,10 @@ const FoodList = () => {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
+        fetchFoodList();
+    }, []);
+
+    const fetchFoodList = () => {
         axios
             .get('http://localhost:8000/api/food')
             .then((response) => {
@@ -20,7 +25,7 @@ const FoodList = () => {
             .catch((error) => {
                 console.error('Error fetching food list:', error);
             });
-    }, []);
+    };
 
     const handleAddFood = () => {
         setSelectedFood({
@@ -28,6 +33,7 @@ const FoodList = () => {
             description: '',
             price: '',
             images: [],
+            quantity: '',
         });
         setIsEditing(false);
         setShowModal(true);
@@ -58,9 +64,8 @@ const FoodList = () => {
             });
     };
 
-
     const handleSaveFood = () => {
-        const { title, description, price, image } = selectedFood;
+        const { title, description, price, image, quantity } = selectedFood;
 
         if (title && description && price && image) {
             const formData = new FormData();
@@ -68,19 +73,18 @@ const FoodList = () => {
             formData.append('description', description);
             formData.append('price', price);
             formData.append('image', image);
+            formData.append('quantity', quantity);
 
             if (isEditing) {
                 // Perform update logic
                 axios
-                    .put(`http://localhost:8000/api/food/${selectedFood._id}`, formData)
+                    .put(`http://localhost:8000/api/food/${selectedFood._id}`, selectedFood)
                     .then((response) => {
-                        const updatedFood = {
-                            ...selectedFood,
-                            image: response.data.image, // Update the image field with the returned image path
-                        };
+                        const updatedFood = response.data;
                         setFoods(foods.map((food) => (food._id === selectedFood._id ? updatedFood : food)));
                         toast.success('Cập nhật món ăn thành công');
                         setShowModal(false);
+                        fetchFoodList(); // Gọi lại API để lấy danh sách món ăn mới nhất
                     })
                     .catch((error) => {
                         console.error('Error updating food:', error);
@@ -98,6 +102,7 @@ const FoodList = () => {
                         setFoods([...foods, newFood]);
                         toast.success('Thêm món ăn thành công');
                         setShowModal(false);
+                        fetchFoodList(); // Gọi lại API để lấy danh sách món ăn mới nhất
                     })
                     .catch((error) => {
                         console.error('Error adding food:', error);
@@ -108,6 +113,7 @@ const FoodList = () => {
             toast.error('Vui lòng điền đầy đủ thông tin món ăn và chọn ảnh');
         }
     };
+
 
 
     return (
@@ -126,6 +132,8 @@ const FoodList = () => {
                         <br />
                         <br />
                         <strong>Price:</strong> {food.price}
+                        <br />
+                        <strong>quantity:</strong> {food.quantity}
                         <br />
                         <br />
                         <Button variant="primary" onClick={() => handleEditFood(food)}>
@@ -154,34 +162,56 @@ const FoodList = () => {
                         </div>
                     ) : (
                         <div>
-                            <label htmlFor="title">Title:</label>
-                            <input
-                                type="text"
-                                id="title"
-                                value={selectedFood ? selectedFood.title : ''}
-                                onChange={(e) => setSelectedFood({ ...selectedFood, title: e.target.value })}
-                            />
-                            <label htmlFor="description">Description:</label>
-                            <input
-                                type="text"
-                                id="description"
-                                value={selectedFood ? selectedFood.description : ''}
-                                onChange={(e) => setSelectedFood({ ...selectedFood, description: e.target.value })}
-                            />
-                            <label htmlFor="image">Images:</label>
-                            <input
-                                type="file"
-                                id="image"
-                                onChange={(e) => setSelectedFood({ ...selectedFood, image: e.target.files[0] })}
-                            />
+                            <Form>
+                                <FormGroup>
+                                    <FormLabel htmlFor="title">Title:</FormLabel>
+                                    <FormControl
+                                        type="text"
+                                        id="title"
+                                        value={selectedFood ? selectedFood.title : ''}
+                                        onChange={(e) => setSelectedFood({ ...selectedFood, title: e.target.value })}
+                                    />
+                                </FormGroup>
 
-                            <label htmlFor="price">Price:</label>
-                            <input
-                                type="text"
-                                id="price"
-                                value={selectedFood ? selectedFood.price : ''}
-                                onChange={(e) => setSelectedFood({ ...selectedFood, price: e.target.value })}
-                            />
+                                <FormGroup>
+                                    <FormLabel htmlFor="description">Description:</FormLabel>
+                                    <FormControl
+                                        type="text"
+                                        id="description"
+                                        value={selectedFood ? selectedFood.description : ''}
+                                        onChange={(e) => setSelectedFood({ ...selectedFood, description: e.target.value })}
+                                    />
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <FormLabel htmlFor="image">Images:</FormLabel>
+                                    <FormControl
+                                        type="file"
+                                        id="image"
+                                        onChange={(e) => setSelectedFood({ ...selectedFood, image: e.target.files[0] })}
+                                    />
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <FormLabel htmlFor="price">Price:</FormLabel>
+                                    <FormControl
+                                        type="text"
+                                        id="price"
+                                        value={selectedFood ? selectedFood.price : ''}
+                                        onChange={(e) => setSelectedFood({ ...selectedFood, price: e.target.value })}
+                                    />
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <FormLabel htmlFor="quantity">Quantity:</FormLabel>
+                                    <FormControl
+                                        type="text"
+                                        id="quantity"
+                                        value={selectedFood ? selectedFood.quantity : ''}
+                                        onChange={(e) => setSelectedFood({ ...selectedFood, quantity: e.target.value })}
+                                    />
+                                </FormGroup>
+                            </Form>
                         </div>
                     )}
                 </Modal.Body>

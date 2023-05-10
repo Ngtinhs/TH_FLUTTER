@@ -41,9 +41,22 @@ class CheckOutCart extends StatelessWidget {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+
+      // Giảm số lượng sản phẩm
+      for (int i = 0; i < products.length; i++) {
+        products[i].quantity -= 1;
+      }
+
+      // Xóa sản phẩm có số lượng <= 0
+      products.removeWhere((product) => product.quantity <= 0);
+
       Navigator.pushNamedAndRemoveUntil(
-          context, HomePage.routeName, (route) => false);
+        context,
+        HomePage.routeName,
+        (route) => false,
+      );
     } else {
+      // Xử lý khi đặt hàng thất bại
       Fluttertoast.showToast(
         msg: 'Đã xảy ra lỗi trong quá trình đặt hàng',
         toastLength: Toast.LENGTH_SHORT,

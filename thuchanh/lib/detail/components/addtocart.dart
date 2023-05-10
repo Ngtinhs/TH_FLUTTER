@@ -26,6 +26,7 @@ class _AddProductToCartState extends State<AddProductToCart> {
       child: ElevatedButton(
         onPressed: () {
           Cart cart = Cart();
+          widget.product.quantity = 1;
           cart.addProductsToCart(widget.product);
           Fluttertoast.showToast(
               msg: "Add to cart",

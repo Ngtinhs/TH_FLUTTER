@@ -26,15 +26,15 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', upload.single('image'), (req, res) => {
-  const { title, description, price } = req.body;
+  const { title, description, price, quantity } = req.body;
   const image = req.file ? 'asset/foods/' + req.file.filename : '';
-
 
   const food = new Food({
     title,
     description,
     image,
     price,
+    quantity
   });
 
   food
@@ -50,12 +50,15 @@ router.post('/', upload.single('image'), (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+  const { title, description, price, quantity } = req.body;
+
   Food.findByIdAndUpdate(
     req.params.id,
     {
-      title: req.body.title,
-      description: req.body.description,
-      price: req.body.price,
+      title,
+      description,
+      price,
+      quantity,
     },
     { new: true }
   )

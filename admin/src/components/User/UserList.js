@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-
+import { Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -131,24 +131,35 @@ const UserList = () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={newUser.username}
-                        onChange={e =>
-                            setNewUser({ ...newUser, username: e.target.value })
-                        }
-                    />
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={newUser.password}
-                        onChange={e =>
-                            setNewUser({ ...newUser, password: e.target.value })
-                        }
-                    />
+                    <div>
+                        <Form>
+                            <FormGroup>
+                                <FormLabel htmlFor="username">Username:</FormLabel>
+                                <FormControl
+                                    type="text"
+                                    id="username"
+                                    value={newUser.username}
+                                    onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                                    placeholder="Enter username"
+                                />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <FormLabel htmlFor="password">Password:</FormLabel>
+                                <FormControl
+                                    type="password"
+                                    id="password"
+                                    value={newUser.password}
+                                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                                    placeholder="Enter password"
+                                />
+                            </FormGroup>
+
+                            <Button variant="primary" type="submit">
+                                Submit
+                            </Button>
+                        </Form>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>

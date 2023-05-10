@@ -17,6 +17,7 @@ class Utilities {
       print(content.toString());
       var arr = json.decode(content)['food'] as List;
       try {
+        result.clear();
         for (var element in arr) {
           var data = Products_fromJson(element);
           result.add(data);
@@ -34,6 +35,7 @@ class Utilities {
       title: item['title'],
       image: item['image'],
       price: double.parse(item['price']),
+      quantity: item['quantity'],
       id: item['_id'],
     );
   }
