@@ -7,6 +7,8 @@ const CategoriesList = () => {
     const [showModal, setShowModal] = useState(false);
     const [categoryData, setCategoryData] = useState({ title: '', image: '' });
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+
 
     useEffect(() => {
         fetchCategories();
@@ -32,8 +34,13 @@ const CategoriesList = () => {
     const handleSaveCategory = () => {
         if (selectedCategory) {
             // Thực hiện cập nhật danh mục
+            const formData = new FormData();
+            formData.append('title', categoryData.title);
+            if (selectedImage) {
+                formData.append('image', selectedImage);
+            }
             axios
-                .put(`http://localhost:8000/api/categories/${selectedCategory._id}`, categoryData)
+                .put(`http://localhost:8000/api/categories/${selectedCategory._id}`, formData)
                 .then(response => {
                     const updatedCategory = response.data;
                     setCategories(prevCategories =>
@@ -48,8 +55,11 @@ const CategoriesList = () => {
                 });
         } else {
             // Thực hiện thêm danh mục mới
+            const formData = new FormData();
+            formData.append('title', categoryData.title);
+            formData.append('image', selectedImage);
             axios
-                .post('http://localhost:8000/api/categories', categoryData)
+                .post('http://localhost:8000/api/categories', formData)
                 .then(response => {
                     setCategories(prevCategories => [...prevCategories, response.data]);
                     setShowModal(false);
@@ -127,15 +137,16 @@ const CategoriesList = () => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formImage">
-                            <Form.Label>Ảnh</Form.Label>
+                        <Form.Group>
+                            <Form.Label htmlFor="image">Ảnh</Form.Label>
                             <Form.Control
-                                type="text"
-                                name="image"
-                                value={categoryData.image}
-                                onChange={handleChange}
+                                type="file"
+                                id="image"
+                                onChange={(e) => setSelectedImage(e.target.files[0])}
                             />
                         </Form.Group>
+
+
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>

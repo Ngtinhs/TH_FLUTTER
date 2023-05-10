@@ -3,6 +3,18 @@ const Food = require('../models/food.model');
 const express = require('express');
 var router = express.Router();
 
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../../thuchanh/asset/images'), // Đường dẫn tuyệt đối của thư mục lưu trữ hình ảnh
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage });
+
 router.get('/', (req, res) => {
   Category.find()
     .then((data) => {
@@ -46,8 +58,9 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
-  const { title, image } = req.body;
+router.post('/', upload.single('image'), (req, res) => {
+  const { title } = req.body;
+  const image = req.file ? 'asset/images/' + req.file.filename : '';
 
   const category = new Category({
     title,
