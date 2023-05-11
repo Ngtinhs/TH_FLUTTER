@@ -1,127 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountDetail extends StatefulWidget {
   const AccountDetail({Key? key}) : super(key: key);
 
   @override
-  State<AccountDetail> createState() => _AccountDetailState();
+  _AccountDetailState createState() => _AccountDetailState();
 }
 
 class _AccountDetailState extends State<AccountDetail> {
-  final email = TextEditingController();
+  late String username;
+  late String password;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
+
+  Future<void> _getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.getString('username') ?? '';
+    password = prefs.getString('password') ?? '';
+    setState(() {});
+  }
+
+  Future<void> _editAccount(BuildContext context) async {
+    TextEditingController usernameController =
+        TextEditingController(text: username);
+    TextEditingController passwordController =
+        TextEditingController(text: password);
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Account'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: usernameController,
+                decoration: const InputDecoration(
+                  labelText: 'Username',
+                ),
+              ),
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('username', usernameController.text);
+                prefs.setString('password', passwordController.text);
+                setState(() {
+                  username = usernameController.text;
+                  password = passwordController.text;
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
+    return Expanded(
+      child: ListView(
         children: [
-          const SizedBox(
-            height: 30,
+          ListTile(
+            title: const Text('Username'),
+            subtitle: Text(username),
           ),
-          emailTextFormField(),
-          const SizedBox(
-            height: 30,
+          ListTile(
+            title: const Text('Password'),
+            subtitle: Text(password),
           ),
-          passwordTextFormField(),
-          const SizedBox(
-            height: 30,
+          ElevatedButton(
+            onPressed: () {
+              _editAccount(context);
+            },
+            child: const Text('Edit Account'),
           ),
-          conformTextFormField(),
-          const SizedBox(
-            height: 30,
-          ),
-          SizedBox(
-            height: 50,
-            width: MediaQuery.of(context).size.width,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, email.text);
-              },
-              style: ButtonStyle(
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
-                backgroundColor: const MaterialStatePropertyAll(Colors.green),
-              ),
-              child: const Text(
-                "Continue",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 40,
-                  width: 40,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                  child: SvgPicture.asset("asset/icons/facebook-2.svg"),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  decoration: const BoxDecoration(
-                      color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                  child: SvgPicture.asset("asset/icons/google.svg"),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                  child: SvgPicture.asset("asset/icons/twitter.svg"),
-                ),
-              ],
-            ),
-          )
         ],
       ),
-    ));
-  }
-
-  TextFormField emailTextFormField() {
-    return TextFormField(
-      controller: email,
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: "enter your email ",
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: Icon(Icons.email_outlined)),
-    );
-  }
-
-  TextFormField conformTextFormField() {
-    return TextFormField(
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: "Re-enter your password",
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: Icon(Icons.lock_outline)),
-    );
-  }
-
-  TextFormField passwordTextFormField() {
-    return TextFormField(
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: "Enter your password",
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: Icon(Icons.lock_outline)),
     );
   }
 }
