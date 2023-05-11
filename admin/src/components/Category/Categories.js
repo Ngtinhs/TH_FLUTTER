@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const CategoriesList = () => {
     const [categories, setCategories] = useState([]);
@@ -30,7 +31,6 @@ const CategoriesList = () => {
         setSelectedCategory(null);
         setCategoryData({ title: '', image: '' });
     };
-
     const handleSaveCategory = () => {
         if (selectedCategory) {
             // Thực hiện cập nhật danh mục
@@ -42,16 +42,18 @@ const CategoriesList = () => {
             axios
                 .put(`http://localhost:8000/api/categories/${selectedCategory._id}`, formData)
                 .then(response => {
-                    const updatedCategory = response.data;
+                    const updatedCategory = response.data.category; // Lấy danh mục đã được cập nhật từ phản hồi
                     setCategories(prevCategories =>
                         prevCategories.map(category =>
                             category._id === updatedCategory._id ? updatedCategory : category
                         )
                     );
                     setShowModal(false);
+                    toast.success('Category updated successfully');
                 })
                 .catch(error => {
                     console.error('Error updating category:', error);
+                    toast.error('Error updating category:', error);
                 });
         } else {
             // Thực hiện thêm danh mục mới
@@ -61,14 +63,19 @@ const CategoriesList = () => {
             axios
                 .post('http://localhost:8000/api/categories', formData)
                 .then(response => {
-                    setCategories(prevCategories => [...prevCategories, response.data]);
+                    const newCategory = response.data;
+                    setCategories(prevCategories => [...prevCategories, newCategory]); // Thêm danh mục mới vào danh sách
                     setShowModal(false);
+                    toast.success('Category adding successfully');
                 })
                 .catch(error => {
                     console.error('Error adding category:', error);
+                    toast.error('Error adding category:', error);
+
                 });
         }
     };
+
 
     const handleEdit = category => {
         setShowModal(true);
@@ -76,16 +83,25 @@ const CategoriesList = () => {
         setCategoryData({ title: category.title, image: category.image });
     };
 
+
     const handleDelete = category => {
         axios
             .delete(`http://localhost:8000/api/categories/${category._id}`)
             .then(() => {
                 setCategories(prevCategories =>
                     prevCategories.filter(item => item._id !== category._id)
+
                 );
             })
             .catch(error => {
-                console.error('Error deleting category:', error);
+                if (error.response && error.response.status === 400) {
+                    // Nếu nhận được phản hồi lỗi 400 từ máy chủ, có nghĩa là danh mục chứa thức ăn và không thể xóa
+                    console.error('Error deleting category:', error.response.data.message);
+                    toast.error(error.response.data.message);
+                } else {
+                    console.error('Error deleting category:', error);
+                    toast.error('Error deleting category:', error);
+                }
             });
     };
 

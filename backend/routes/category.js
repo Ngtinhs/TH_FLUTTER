@@ -92,8 +92,13 @@ router.put('/:id', (req, res) => {
     },
     { new: true }
   )
-    .then(() => {
-      res.send({ message: 'Updated successfully' });
+    .then((updatedCategory) => {
+      if (!updatedCategory) {
+        return res.status(404).send({
+          message: 'Category not found',
+        });
+      }
+      res.send({ category: updatedCategory, message: 'Updated successfully' });
     })
     .catch((error) => {
       res.status(500).send({
@@ -102,10 +107,28 @@ router.put('/:id', (req, res) => {
     });
 });
 
+
 router.delete('/:id', (req, res) => {
-  Category.findByIdAndRemove(req.params.id)
-    .then(() => {
-      res.send({ message: 'Deleted successfully' });
+  const categoryId = req.params.id;
+
+  Food.findOne({ category: categoryId })
+    .then((food) => {
+      if (food) {
+        // Nếu tìm thấy ít nhất một thức ăn thuộc danh mục
+        return res.status(400).send({
+          message: 'Không thể xóa danh mục vì nó chứa món ăn',
+        });
+      }
+
+      Category.findByIdAndRemove(categoryId)
+        .then(() => {
+          res.send({ message: 'Deleted successfully' });
+        })
+        .catch((error) => {
+          res.status(500).send({
+            message: error.message,
+          });
+        });
     })
     .catch((error) => {
       res.status(500).send({
