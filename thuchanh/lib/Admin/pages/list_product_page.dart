@@ -13,6 +13,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
   List<dynamic> foods = [];
   bool showModal = false;
   String selectedId = '';
+  String? selectedCategory = '';
   Map<String, dynamic> newFood = {
     'title': '',
     'description': '',
@@ -52,9 +53,13 @@ class _ListFoodPageState extends State<ListFoodPage> {
         await http.get(Uri.parse('http://192.168.15.109:8000/api/categories'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      if (data is List) {
+      print(data); // In ra nội dung phản hồi từ máy chủ
+      if (data['categories'] is List) {
         setState(() {
-          categories = data;
+          categories = data['categories'];
+          if (categories.isNotEmpty) {
+            selectedCategory = categories[0]['_id'];
+          }
         });
       } else {
         throw Exception('Invalid response format');
@@ -273,10 +278,20 @@ class _ListFoodPageState extends State<ListFoodPage> {
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 16.0),
-            TextField(
-              decoration: InputDecoration(labelText: 'Category ID'),
-              onChanged: (value) => newFood['category'] = value,
-              controller: TextEditingController(text: newFood['category']),
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(labelText: 'Category'),
+              value: selectedCategory ?? '',
+              onChanged: (value) {
+                setState(() {
+                  selectedCategory = value;
+                });
+              },
+              items: categories.map((category) {
+                return DropdownMenuItem<String>(
+                  value: category['_id'],
+                  child: Text(category['title']),
+                );
+              }).toList(),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
