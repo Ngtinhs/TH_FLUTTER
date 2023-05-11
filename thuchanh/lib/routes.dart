@@ -10,6 +10,7 @@ import 'Admin/adminpage.dart';
 import './Admin/pages/list_user_page.dart';
 import './Admin/pages/list_product_page.dart';
 import './Admin/pages/list_order_page.dart';
+import 'package:demo/Admin/pages/list_cate_page.dart';
 
 final Map<String, WidgetBuilder> routes = {
   SplashPage.routeName: (context) => SplashPage(),
@@ -23,4 +24,5 @@ final Map<String, WidgetBuilder> routes = {
   ListUserPage.routeName: (context) => ListUserPage(),
   FoodList.routeName: (context) => FoodList(),
   ListOrderPage.routeName: (context) => ListOrderPage(),
+  ListCategoryPage.routeName: (context) => ListCategoryPage(),
 };

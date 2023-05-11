@@ -1,3 +1,4 @@
+import 'package:demo/Admin/pages/list_cate_page.dart';
 import 'package:flutter/material.dart';
 import './pages/list_order_page.dart';
 import './pages/list_product_page.dart';
@@ -33,6 +34,12 @@ class AdminPage extends StatelessWidget {
                 Navigator.pushNamed(context, ListOrderPage.routeName);
               },
               child: Text("Quản lý đơn hàng"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, ListCategoryPage.routeName);
+              },
+              child: Text("Quản lý danh mục sp"),
             ),
           ],
         ),
