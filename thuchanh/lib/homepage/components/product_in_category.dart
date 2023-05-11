@@ -74,6 +74,11 @@ class _FoodListPageState extends State<FoodListPage> {
         future: foodsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                child: Text('Không có food nào trong category này :>'),
+              );
+            }
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -124,10 +129,11 @@ class _FoodListPageState extends State<FoodListPage> {
             );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
         },
       ),
     );
