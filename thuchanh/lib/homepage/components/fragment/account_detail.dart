@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../signin/signinpage.dart';
 
 class AccountDetail extends StatefulWidget {
   const AccountDetail({Key? key}) : super(key: key);
@@ -18,6 +21,24 @@ class _AccountDetailState extends State<AccountDetail> {
   void initState() {
     super.initState();
     _getUserData();
+  }
+
+  Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear(); // Xóa tất cả dữ liệu trong shared preferences
+
+    Fluttertoast.showToast(
+      msg: 'Đăng xuất thành công',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+    // Chuyển về trang SignInForm
+    Navigator.pushNamed(
+        context, SigninPage.routeName); // Quay trở lại màn hình trước đó
   }
 
   Future<void> _getUserData() async {
@@ -129,6 +150,10 @@ class _AccountDetailState extends State<AccountDetail> {
               _editAccount(context);
             },
             child: const Text('Edit Account'),
+          ),
+          TextButton(
+            onPressed: _logout,
+            child: const Text('Đăng xuất'),
           ),
         ],
       ),
