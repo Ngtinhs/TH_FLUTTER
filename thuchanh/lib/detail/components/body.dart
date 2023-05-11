@@ -19,15 +19,15 @@ class Body extends StatelessWidget {
             height: 200,
             child: Image.asset(product.image),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             'Description: ${product.description}',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             'Số lượng sản phẩm hiện có: ${product.quantity}',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
           AddProductToCart(
             product: product,

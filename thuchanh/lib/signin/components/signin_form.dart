@@ -55,9 +55,9 @@ class _SignInFormState extends State<SignInForm> {
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(8),
               alignment: Alignment.center,
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
+                children: [
                   Text(
                     "Food Now",
                     style: TextStyle(

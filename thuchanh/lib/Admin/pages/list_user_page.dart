@@ -5,6 +5,8 @@ import 'dart:convert';
 class ListUserPage extends StatefulWidget {
   static String routeName = "/list_user_screen";
 
+  const ListUserPage({super.key});
+
   @override
   _ListUserPageState createState() => _ListUserPageState();
 }
@@ -53,18 +55,18 @@ class _ListUserPageState extends State<ListUserPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Xác nhận xóa người dùng'),
+          title: const Text('Xác nhận xóa người dùng'),
           content: Text(
               'Bạn có chắc chắn muốn xóa người dùng "${selectedUser['username']}"?'),
           actions: [
             TextButton(
-              child: Text('Hủy'),
+              child: const Text('Hủy'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Xóa'),
+              child: const Text('Xóa'),
               onPressed: () {
                 deleteUser(selectedUser['_id']);
                 Navigator.of(context).pop();
@@ -143,7 +145,7 @@ class _ListUserPageState extends State<ListUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quản lý người dùng"),
+        title: const Text("Quản lý người dùng"),
       ),
       body: ListView.builder(
         itemCount: users.length,
@@ -157,11 +159,11 @@ class _ListUserPageState extends State<ListUserPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () => handleEdit(user['_id']),
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () => handleDelete(user['_id']),
                 ),
               ],
@@ -171,7 +173,7 @@ class _ListUserPageState extends State<ListUserPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() => showModal = true),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       bottomSheet: showModal ? buildUserForm() : null,
     );
@@ -179,7 +181,7 @@ class _ListUserPageState extends State<ListUserPage> {
 
   Widget buildUserForm() {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -189,29 +191,29 @@ class _ListUserPageState extends State<ListUserPage> {
             selectedId.isNotEmpty
                 ? 'Sửa thông tin người dùng'
                 : 'Thêm người dùng',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           TextField(
-            decoration: InputDecoration(labelText: 'Username'),
+            decoration: const InputDecoration(labelText: 'Username'),
             onChanged: (value) => newUser['username'] = value,
             controller: TextEditingController(text: newUser['username']),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           TextField(
-            decoration: InputDecoration(labelText: 'Password'),
+            decoration: const InputDecoration(labelText: 'Password'),
             onChanged: (value) => newUser['password'] = value,
             controller: TextEditingController(text: newUser['password']),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: selectedId.isNotEmpty ? updateUser : addUser,
             child: Text(selectedId.isNotEmpty ? 'Lưu' : 'Thêm'),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           TextButton(
             onPressed: closeModal,
-            child: Text('Đóng'),
+            child: const Text('Đóng'),
           ),
         ],
       ),

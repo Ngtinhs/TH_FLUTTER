@@ -22,7 +22,7 @@ void main() async {
     sound: true,
   );
 
-  print('Permission granted: ${settings.authorizationStatus}');
+  // print('Permission granted: ${settings.authorizationStatus}');
 
   runApp(MyApp());
 }
@@ -32,11 +32,11 @@ class PushNotificationService {
 
   Future initialize() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
+      // print('Got a message whilst in the foreground!');
+      // print('Message data: ${message.data}');
 
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+        // print('Message also contained a notification: ${message.notification}');
       }
     });
 
@@ -48,15 +48,15 @@ class PushNotificationService {
 
   Future<String?> getToken() async {
     String? token = await _fcm.getToken();
-    print('Token: $token');
+    // print('Token: $token');
     return token;
   }
 
   Future<void> backgroundHandler(RemoteMessage message) async {
-    print('Handling a background message ${message.messageId}');
-    print('Message data: ${message.data}');
-    print('Message notification: ${message.notification?.title}');
-    print('Message notification: ${message.notification?.body}');
+    // print('Handling a background message ${message.messageId}');
+    // print('Message data: ${message.data}');
+    // print('Message notification: ${message.notification?.title}');
+    // print('Message notification: ${message.notification?.body}');
   }
 }
 
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SplashPage(),
+      home: const SplashPage(),
     );
   }
 }

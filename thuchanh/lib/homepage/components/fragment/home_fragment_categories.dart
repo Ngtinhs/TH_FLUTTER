@@ -62,8 +62,8 @@ class _CategoriesStoreState extends State<CategoriesStore> {
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Expanded(
                   child: Text(
                     'Categories',
@@ -101,7 +101,7 @@ class _CategoriesStoreState extends State<CategoriesStore> {
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 }
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               },
             ),
           ],

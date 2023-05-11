@@ -80,7 +80,8 @@ class CheckOutCart extends StatelessWidget {
                   borderRadius: BorderRadius.circular(0.0),
                   side: const BorderSide(color: Colors.green))),
               backgroundColor: MaterialStateProperty.all(Colors.white),
-              side: MaterialStateProperty.all(BorderSide(color: Colors.green)),
+              side: MaterialStateProperty.all(
+                  const BorderSide(color: Colors.green)),
               padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
             ),
             onPressed: () {},
@@ -97,7 +98,8 @@ class CheckOutCart extends StatelessWidget {
             style: ButtonStyle(
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0.0))),
-              side: MaterialStateProperty.all(BorderSide(color: Colors.green)),
+              side: MaterialStateProperty.all(
+                  const BorderSide(color: Colors.green)),
               padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
             ),
             onPressed: () {

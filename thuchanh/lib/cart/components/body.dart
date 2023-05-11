@@ -23,9 +23,9 @@ class _BodyState extends State<Body> {
 
   void calculateTotal() {
     sum = 0.0;
-    cartdetail.forEach((product) {
+    for (var product in cartdetail) {
       sum += product.price * product.quantity; // Tính tổng giá trị đơn hàng
-    });
+    }
   }
 
   Future<void> updateQuantity(int index, int quantity) async {
@@ -60,14 +60,14 @@ class _BodyState extends State<Body> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Vượt quá số lượng sản phẩm hiện có"),
           ),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Không tìm thấy sản phẩm trên server"),
         ),
       );

@@ -5,6 +5,8 @@ import 'dart:convert';
 class ListOrderPage extends StatefulWidget {
   static String routeName = "/list_order_screen";
 
+  const ListOrderPage({super.key});
+
   @override
   _ListOrderPageState createState() => _ListOrderPageState();
 }
@@ -35,10 +37,10 @@ class _ListOrderPageState extends State<ListOrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Danh sách đơn hàng"),
+        title: const Text("Danh sách đơn hàng"),
       ),
       body: Container(
-        child: orders.length > 0
+        child: orders.isNotEmpty
             ? ListView.builder(
                 itemCount: orders.length,
                 itemBuilder: (context, index) {
@@ -51,11 +53,11 @@ class _ListOrderPageState extends State<ListOrderPage> {
                         Text("Address: ${order['address']}"),
                         Text("Total: ${order['total']}"),
                         Text("Status: ${order['status']}"),
-                        Text("Details:"),
+                        const Text("Details:"),
                         order['orderDetails'] != null
                             ? ListView.builder(
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 itemCount: order['orderDetails'].length,
                                 itemBuilder: (context, idx) {
                                   final product = order['orderDetails'][idx];
@@ -73,13 +75,13 @@ class _ListOrderPageState extends State<ListOrderPage> {
                                   );
                                 },
                               )
-                            : Text("No order details available."),
+                            : const Text("No order details available."),
                       ],
                     ),
                   );
                 },
               )
-            : Center(child: Text("No orders available.")),
+            : const Center(child: Text("No orders available.")),
       ),
     );
   }

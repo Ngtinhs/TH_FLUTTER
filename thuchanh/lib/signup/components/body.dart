@@ -2,14 +2,16 @@ import 'package:demo/signup/components/signup_form.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
-   // Body({Key? key}) : super(key: key);
+  const Body({super.key});
+
+  // Body({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Container(
+        child: SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: Padding(
+      child: const Padding(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [

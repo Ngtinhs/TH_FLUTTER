@@ -5,6 +5,8 @@ import 'dart:convert';
 class ListCategoryPage extends StatefulWidget {
   static String routeName = "/list_category_screen";
 
+  const ListCategoryPage({super.key});
+
   @override
   _ListCategoryPageState createState() => _ListCategoryPageState();
 }
@@ -55,18 +57,18 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Xác nhận xóa danh mục'),
+          title: const Text('Xác nhận xóa danh mục'),
           content: Text(
               'Bạn có chắc chắn muốn xóa danh mục "${selectedCategory['title']}"?'),
           actions: [
             TextButton(
-              child: Text('Hủy'),
+              child: const Text('Hủy'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Xóa'),
+              child: const Text('Xóa'),
               onPressed: () {
                 deleteCategory(selectedCategory['_id']);
                 Navigator.of(context).pop();
@@ -146,7 +148,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quản lý danh mục"),
+        title: const Text("Quản lý danh mục"),
       ),
       body: ListView.builder(
         itemCount: categories.length,
@@ -160,11 +162,11 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () => handleEdit(category['_id']),
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () => handleDelete(category['_id']),
                 ),
               ],
@@ -174,7 +176,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() => showModal = true),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       bottomSheet: showModal ? buildCategoryForm() : null,
     );
@@ -182,7 +184,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
 
   Widget buildCategoryForm() {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -190,29 +192,29 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
         children: [
           Text(
             selectedId.isNotEmpty ? 'Sửa thông tin danh mục' : 'Thêm danh mục',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           TextField(
-            decoration: InputDecoration(labelText: 'Title'),
+            decoration: const InputDecoration(labelText: 'Title'),
             onChanged: (value) => newCategory['title'] = value,
             controller: TextEditingController(text: newCategory['title']),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           TextField(
-            decoration: InputDecoration(labelText: 'Image'),
+            decoration: const InputDecoration(labelText: 'Image'),
             onChanged: (value) => newCategory['image'] = value,
             controller: TextEditingController(text: newCategory['image']),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: selectedId.isNotEmpty ? updateCategory : addCategory,
             child: Text(selectedId.isNotEmpty ? 'Lưu' : 'Thêm'),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           TextButton(
             onPressed: closeModal,
-            child: Text('Đóng'),
+            child: const Text('Đóng'),
           ),
         ],
       ),

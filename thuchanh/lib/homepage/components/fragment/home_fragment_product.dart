@@ -27,8 +27,8 @@ class _ProductPopularState extends State<ProductPopular> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Row(
-            children: const [
+          const Row(
+            children: [
               Expanded(
                   child: Text(
                 'Popular Products',

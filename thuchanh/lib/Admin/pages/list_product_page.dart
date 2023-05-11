@@ -5,6 +5,8 @@ import 'dart:convert';
 class ListFoodPage extends StatefulWidget {
   static String routeName = "/list_food_screen";
 
+  const ListFoodPage({super.key});
+
   @override
   _ListFoodPageState createState() => _ListFoodPageState();
 }
@@ -53,7 +55,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
         await http.get(Uri.parse('http://192.168.15.109:8000/api/categories'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print(data); // In ra nội dung phản hồi từ máy chủ
+      // print(data); // In ra nội dung phản hồi từ máy chủ
       if (data['categories'] is List) {
         setState(() {
           categories = data['categories'];
@@ -89,18 +91,18 @@ class _ListFoodPageState extends State<ListFoodPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Delete'),
+          title: const Text('Confirm Delete'),
           content: Text(
               'Are you sure you want to delete the food "${selectedFood['title']}"?'),
           actions: [
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () {
                 deleteFood(selectedFood['_id']);
                 Navigator.of(context).pop();
@@ -188,7 +190,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Product Management"),
+        title: const Text("Product Management"),
       ),
       body: ListView.builder(
         itemCount: foods.length,
@@ -211,11 +213,11 @@ class _ListFoodPageState extends State<ListFoodPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () => handleEdit(food['_id']),
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () => handleDelete(food['_id']),
                 ),
               ],
@@ -225,7 +227,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() => showModal = true),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       bottomSheet: showModal ? buildFoodForm() : null,
     );
@@ -234,7 +236,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
   Widget buildFoodForm() {
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -242,44 +244,45 @@ class _ListFoodPageState extends State<ListFoodPage> {
           children: [
             Text(
               selectedId.isNotEmpty ? 'Edit Food' : 'Add Food',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style:
+                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
               onChanged: (value) => newFood['title'] = value,
               controller: TextEditingController(text: newFood['title']),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: const InputDecoration(labelText: 'Description'),
               onChanged: (value) => newFood['description'] = value,
               controller: TextEditingController(text: newFood['description']),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Image'),
+              decoration: const InputDecoration(labelText: 'Image'),
               onChanged: (value) => newFood['image'] = value,
               controller: TextEditingController(text: newFood['image']),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Price'),
+              decoration: const InputDecoration(labelText: 'Price'),
               onChanged: (value) => newFood['price'] = value,
               controller: TextEditingController(text: newFood['price']),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Quantity'),
+              decoration: const InputDecoration(labelText: 'Quantity'),
               onChanged: (value) => newFood['quantity'] = int.parse(value),
               controller:
                   TextEditingController(text: newFood['quantity'].toString()),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Category'),
+              decoration: const InputDecoration(labelText: 'Category'),
               value: selectedCategory ?? '',
               onChanged: (value) {
                 setState(() {
@@ -293,15 +296,15 @@ class _ListFoodPageState extends State<ListFoodPage> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: selectedId.isNotEmpty ? updateFood : addFood,
               child: Text(selectedId.isNotEmpty ? 'Update' : 'Add'),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             TextButton(
               onPressed: closeModal,
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         ),

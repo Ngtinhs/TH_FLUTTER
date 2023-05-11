@@ -13,16 +13,16 @@ import './Admin/pages/list_order_page.dart';
 import 'package:demo/Admin/pages/list_cate_page.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  SplashPage.routeName: (context) => SplashPage(),
-  SigninPage.routeName: (context) => SigninPage(),
-  SignUpPage.routeName: (context) => SignUpPage(),
+  SplashPage.routeName: (context) => const SplashPage(),
+  SigninPage.routeName: (context) => const SigninPage(),
+  SignUpPage.routeName: (context) => const SignUpPage(),
   HomePage.routeName: (context) => HomePage(),
-  AdminPage.routeName: (context) => AdminPage(),
-  ProductPage.routeName: (context) => ProductPage(),
-  CartPage.routeName: (context) => CartPage(),
-  SearchPage.routeName: (context) => SearchPage(),
-  ListUserPage.routeName: (context) => ListUserPage(),
-  ListFoodPage.routeName: (context) => ListFoodPage(),
-  ListOrderPage.routeName: (context) => ListOrderPage(),
-  ListCategoryPage.routeName: (context) => ListCategoryPage(),
+  AdminPage.routeName: (context) => const AdminPage(),
+  ProductPage.routeName: (context) => const ProductPage(),
+  CartPage.routeName: (context) => const CartPage(),
+  SearchPage.routeName: (context) => const SearchPage(),
+  ListUserPage.routeName: (context) => const ListUserPage(),
+  ListFoodPage.routeName: (context) => const ListFoodPage(),
+  ListOrderPage.routeName: (context) => const ListOrderPage(),
+  ListCategoryPage.routeName: (context) => const ListCategoryPage(),
 };

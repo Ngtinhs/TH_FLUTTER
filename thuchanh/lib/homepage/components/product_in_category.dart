@@ -21,7 +21,7 @@ class Food {
 class FoodListPage extends StatefulWidget {
   final String categoryId;
 
-  FoodListPage({required this.categoryId});
+  const FoodListPage({super.key, required this.categoryId});
 
   @override
   _FoodListPageState createState() => _FoodListPageState();
@@ -56,7 +56,7 @@ class _FoodListPageState extends State<FoodListPage> {
           result.add(data);
         }
       } catch (e) {
-        print(e.toString());
+        // print(e.toString());
       }
       return result;
     } else {
@@ -68,14 +68,14 @@ class _FoodListPageState extends State<FoodListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Food List'),
+        title: const Text('Food List'),
       ),
       body: FutureBuilder<List<Products>>(
         future: foodsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('Không có food nào trong category này :>'),
               );
             }
@@ -106,7 +106,7 @@ class _FoodListPageState extends State<FoodListPage> {
                           const SizedBox(height: 8),
                           Text(
                             snapshot.data![index].title,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -114,7 +114,7 @@ class _FoodListPageState extends State<FoodListPage> {
                           const SizedBox(height: 4),
                           Text(
                             snapshot.data![index].price.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.green,
                               fontWeight: FontWeight.bold,
@@ -130,7 +130,7 @@ class _FoodListPageState extends State<FoodListPage> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

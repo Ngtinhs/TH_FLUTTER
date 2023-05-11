@@ -14,7 +14,7 @@ class Utilities {
     if (res.statusCode == 200) {
       var content = res.body;
 
-      print(content.toString());
+      // print(content.toString());
       var arr = json.decode(content)['food'] as List;
       try {
         result.clear();
@@ -23,7 +23,7 @@ class Utilities {
           result.add(data);
         }
       } catch (e) {
-        print(e.toString());
+        // print(e.toString());
       }
     }
     return result;

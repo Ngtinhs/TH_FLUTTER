@@ -18,29 +18,29 @@ class _SignUpFormState extends State<SignUpForm> {
   final conform = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  var _passKey = GlobalKey<FormFieldState>();
+  final _passKey = GlobalKey<FormFieldState>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             emalTextFormField(),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             passwordTextFormField(),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             conformTextFormField(),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             SizedBox(
@@ -56,8 +56,9 @@ class _SignUpFormState extends State<SignUpForm> {
                 style: ButtonStyle(
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
-                    backgroundColor: MaterialStatePropertyAll(Colors.green)),
-                child: Text(
+                    backgroundColor:
+                        const MaterialStatePropertyAll(Colors.green)),
+                child: const Text(
                   "Continue",
                   style: TextStyle(
                       fontSize: 18,
@@ -66,10 +67,10 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Container(
+            SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -77,25 +78,25 @@ class _SignUpFormState extends State<SignUpForm> {
                     Container(
                       height: 40,
                       width: 40,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
                           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
                       child: SvgPicture.asset("asset/icons/facebook-2.svg"),
                     ),
                     Container(
                       height: 40,
                       width: 40,
-                      margin: EdgeInsets.only(left: 10, right: 10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
                           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
                       child: SvgPicture.asset("asset/icons/google.svg"),
                     ),
                     Container(
                       height: 40,
                       width: 40,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
                           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
                       child: SvgPicture.asset("asset/icons/twitter.svg"),
                     ),
@@ -111,7 +112,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
         controller: email,
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             border: OutlineInputBorder(),
             hintText: "Enter your email",
             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -130,7 +131,7 @@ class _SignUpFormState extends State<SignUpForm> {
       controller: password,
       obscureText: true,
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
           border: OutlineInputBorder(),
           hintText: "Enter your password",
           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -146,7 +147,7 @@ class _SignUpFormState extends State<SignUpForm> {
       controller: conform,
       obscureText: true,
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
           border: OutlineInputBorder(),
           hintText: "Re-enter your password",
           floatingLabelBehavior: FloatingLabelBehavior.always,
