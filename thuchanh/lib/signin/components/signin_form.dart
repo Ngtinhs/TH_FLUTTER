@@ -23,6 +23,8 @@ class _SignInFormState extends State<SignInForm> {
 
   final username = TextEditingController();
   final password = TextEditingController();
+  final fullname = TextEditingController();
+  final image = TextEditingController();
 
   @override
   void initState() {
@@ -36,8 +38,10 @@ class _SignInFormState extends State<SignInForm> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('username')?.isNotEmpty ?? false) {
       setState(() {
-        username.text = prefs.getString('username')!;
-        password.text = prefs.getString('password')!;
+        username.text = prefs.getString('username') ?? '';
+        password.text = prefs.getString('password') ?? '';
+        fullname.text = prefs.getString('fullname') ?? '';
+        image.text = prefs.getString('image') ?? '';
         _value = prefs.getBool('check') ?? false;
       });
     }
@@ -132,6 +136,8 @@ class _SignInFormState extends State<SignInForm> {
                                   await SharedPreferences.getInstance();
                               prefs.setString('username', username.text);
                               prefs.setString('password', password.text);
+                              prefs.setString('fullname', fullname.text);
+                              prefs.setString('image', image.text);
                               prefs.setBool('check', _value);
 
                               var userData = json.decode(response.body);

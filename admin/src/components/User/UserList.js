@@ -57,7 +57,7 @@ const UserList = () => {
 
     const handleAddUser = () => {
         setShowModal(true);
-        setNewUser({ username: '', password: '' });
+        setNewUser({ username: '', password: '', fullname: '', image: '' });
     };
 
     const handleSaveUser = () => {
@@ -111,8 +111,10 @@ const UserList = () => {
             <ul className="list-group">
                 {users.map(user => (
                     <li key={user._id} className="list-group-item">
+                        <strong>Fullname:</strong> {user.fullname}<br />
+                        <strong>Image:</strong> {user.image}<br />
                         <strong>Role:</strong> {user.role}<br />
-                        <strong>ID:</strong> {user._id}<br />
+                        {/* <strong>ID:</strong> {user._id}<br /> */}
                         <strong>Username:</strong> {user.username}<br />
                         <strong>Password:</strong> {user.password}<br />
                         <Button variant="primary" onClick={() => handleEdit(user._id)}>
@@ -133,6 +135,28 @@ const UserList = () => {
                 <Modal.Body>
                     <div>
                         <Form>
+
+                            <FormGroup>
+                                <FormLabel htmlFor="fullname">Fullname:</FormLabel>
+                                <FormControl
+                                    type="text"
+                                    id="fullname"
+                                    value={newUser.fullname}
+                                    onChange={(e) => setNewUser({ ...newUser, fullname: e.target.value })}
+                                    placeholder="Enter fullname"
+                                />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <FormLabel htmlFor="image">Image:</FormLabel>
+                                <FormControl
+                                    type="text"
+                                    id="image"
+                                    value={newUser.image}
+                                    onChange={(e) => setNewUser({ ...newUser, image: e.target.value })}
+                                    placeholder="Enter image"
+                                />
+                            </FormGroup>
                             <FormGroup>
                                 <FormLabel htmlFor="username">Username:</FormLabel>
                                 <FormControl
@@ -154,6 +178,7 @@ const UserList = () => {
                                     placeholder="Enter password"
                                 />
                             </FormGroup>
+
                         </Form>
                     </div>
                 </Modal.Body>

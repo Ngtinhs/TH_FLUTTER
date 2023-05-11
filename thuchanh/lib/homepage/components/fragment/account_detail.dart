@@ -11,6 +11,8 @@ class AccountDetail extends StatefulWidget {
 class _AccountDetailState extends State<AccountDetail> {
   late String username;
   late String password;
+  late String fullname;
+  late String image;
 
   @override
   void initState() {
@@ -20,12 +22,18 @@ class _AccountDetailState extends State<AccountDetail> {
 
   Future<void> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    username = prefs.getString('username') ?? '';
-    password = prefs.getString('password') ?? '';
-    setState(() {});
+    setState(() {
+      username = prefs.getString('username') ?? '';
+      password = prefs.getString('password') ?? '';
+      fullname = prefs.getString('fullname') ?? '';
+      image = prefs.getString('image') ?? '';
+    });
   }
 
   Future<void> _editAccount(BuildContext context) async {
+    TextEditingController fullnameController =
+        TextEditingController(text: fullname);
+    TextEditingController imageController = TextEditingController(text: image);
     TextEditingController usernameController =
         TextEditingController(text: username);
     TextEditingController passwordController =
@@ -39,6 +47,18 @@ class _AccountDetailState extends State<AccountDetail> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              TextField(
+                controller: fullnameController,
+                decoration: const InputDecoration(
+                  labelText: 'fullname',
+                ),
+              ),
+              TextField(
+                controller: imageController,
+                decoration: const InputDecoration(
+                  labelText: 'image',
+                ),
+              ),
               TextField(
                 controller: usernameController,
                 decoration: const InputDecoration(
@@ -59,9 +79,13 @@ class _AccountDetailState extends State<AccountDetail> {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString('username', usernameController.text);
                 prefs.setString('password', passwordController.text);
+                prefs.setString('fullname', fullnameController.text);
+                prefs.setString('image', imageController.text);
                 setState(() {
                   username = usernameController.text;
                   password = passwordController.text;
+                  fullname = fullnameController.text;
+                  image = imageController.text;
                 });
                 Navigator.of(context).pop();
               },
@@ -84,6 +108,14 @@ class _AccountDetailState extends State<AccountDetail> {
     return Expanded(
       child: ListView(
         children: [
+          ListTile(
+            title: const Text('Fullname'),
+            subtitle: Text(fullname),
+          ),
+          ListTile(
+            title: const Text('Image'),
+            subtitle: Text(image),
+          ),
           ListTile(
             title: const Text('Username'),
             subtitle: Text(username),

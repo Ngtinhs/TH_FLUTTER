@@ -18,6 +18,8 @@ class _ListUserPageState extends State<ListUserPage> {
   Map<String, dynamic> newUser = {
     'username': '',
     'password': '',
+    'fullname': '',
+    'image': '',
   };
 
   @override
@@ -44,6 +46,8 @@ class _ListUserPageState extends State<ListUserPage> {
     setState(() {
       selectedId = id;
       showModal = true;
+      newUser['fullname'] = selectedUser['fullname'];
+      newUser['image'] = selectedUser['image'];
       newUser['username'] = selectedUser['username'];
       newUser['password'] = selectedUser['password'];
     });
@@ -136,6 +140,8 @@ class _ListUserPageState extends State<ListUserPage> {
     setState(() {
       showModal = false;
       selectedId = '';
+      newUser['fullname'] = '';
+      newUser['image'] = '';
       newUser['username'] = '';
       newUser['password'] = '';
     });
@@ -154,7 +160,7 @@ class _ListUserPageState extends State<ListUserPage> {
           return ListTile(
             title: Text("ID: ${user['_id']}"),
             subtitle: Text(
-                "Username: ${user['username']}\nPassword: ${user['password']}"),
+                "Username: ${user['username']}\nPassword: ${user['password']}\nFullname: ${user['fullname']}\nimage: ${user['image']}"),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -183,39 +189,54 @@ class _ListUserPageState extends State<ListUserPage> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            selectedId.isNotEmpty
-                ? 'Sửa thông tin người dùng'
-                : 'Thêm người dùng',
-            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16.0),
-          TextField(
-            decoration: const InputDecoration(labelText: 'Username'),
-            onChanged: (value) => newUser['username'] = value,
-            controller: TextEditingController(text: newUser['username']),
-          ),
-          const SizedBox(height: 16.0),
-          TextField(
-            decoration: const InputDecoration(labelText: 'Password'),
-            onChanged: (value) => newUser['password'] = value,
-            controller: TextEditingController(text: newUser['password']),
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: selectedId.isNotEmpty ? updateUser : addUser,
-            child: Text(selectedId.isNotEmpty ? 'Lưu' : 'Thêm'),
-          ),
-          const SizedBox(height: 8.0),
-          TextButton(
-            onPressed: closeModal,
-            child: const Text('Đóng'),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              selectedId.isNotEmpty
+                  ? 'Sửa thông tin người dùng'
+                  : 'Thêm người dùng',
+              style:
+                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Username'),
+              onChanged: (value) => newUser['username'] = value,
+              controller: TextEditingController(text: newUser['username']),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Password'),
+              onChanged: (value) => newUser['password'] = value,
+              controller: TextEditingController(text: newUser['password']),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              decoration: const InputDecoration(labelText: 'fullname'),
+              onChanged: (value) => newUser['fullname'] = value,
+              controller: TextEditingController(text: newUser['fullname']),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              decoration: const InputDecoration(labelText: 'image'),
+              onChanged: (value) => newUser['image'] = value,
+              controller: TextEditingController(text: newUser['image']),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: selectedId.isNotEmpty ? updateUser : addUser,
+              child: Text(selectedId.isNotEmpty ? 'Lưu' : 'Thêm'),
+            ),
+            const SizedBox(height: 8.0),
+            TextButton(
+              onPressed: closeModal,
+              child: const Text('Đóng'),
+            ),
+          ],
+        ),
       ),
     );
   }
