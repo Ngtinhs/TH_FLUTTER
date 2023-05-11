@@ -5,6 +5,7 @@ import './pages/list_product_page.dart';
 import './pages/list_user_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:demo/signin/signinpage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AdminPage extends StatelessWidget {
   static String routeName = "/home_admin_screen";
@@ -28,6 +29,15 @@ class AdminPage extends StatelessWidget {
 
               // Chuyển về trang SignInForm
               Navigator.pushNamed(context, SigninPage.routeName);
+
+              Fluttertoast.showToast(
+                msg: 'Đăng xuất thành công',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
             },
             icon: const Icon(Icons.logout),
           ),

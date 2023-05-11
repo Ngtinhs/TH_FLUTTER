@@ -2,6 +2,16 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
 
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, '../../thuchanh/asset/users'), // Đường dẫn tuyệt đối của thư mục lưu trữ hình ảnh
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
+});
+
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -23,7 +33,8 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     try {
-        const { username, password, role } = req.body;
+        const { username, password, role, fullname } = req.body;
+        const image = req.file ? 'asset/foods/' + req.file.filename : '';
 
         const existingUser = await User.findOne({ username });
 
@@ -33,6 +44,8 @@ router.post('/register', async (req, res) => {
             const newUser = new User({
                 username,
                 password,
+                image,
+                fullname,
                 role: role ? role : 'customer' // Nếu role được cung cấp thì sử dụng giá trị đó, nếu không thì mặc định là 'customer'
             });
             await newUser.save();
