@@ -22,7 +22,7 @@ final Map<String, WidgetBuilder> routes = {
   CartPage.routeName: (context) => CartPage(),
   SearchPage.routeName: (context) => SearchPage(),
   ListUserPage.routeName: (context) => ListUserPage(),
-  FoodList.routeName: (context) => FoodList(),
+  ListFoodPage.routeName: (context) => ListFoodPage(),
   ListOrderPage.routeName: (context) => ListOrderPage(),
   ListCategoryPage.routeName: (context) => ListCategoryPage(),
 };

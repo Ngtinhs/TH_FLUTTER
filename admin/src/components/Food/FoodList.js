@@ -107,12 +107,12 @@ const FoodList = () => {
         }
     };
 
-
     const handleEditFood = (food) => {
         setSelectedFood(food);
         setIsEditing(true);
         setShowEditModal(true); // Hiển thị form chỉnh sửa
     };
+
 
     const handleDeleteFood = (food) => {
         setSelectedFoodToDelete(food);
