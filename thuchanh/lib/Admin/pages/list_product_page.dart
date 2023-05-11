@@ -21,11 +21,13 @@ class _ListFoodPageState extends State<ListFoodPage> {
     'quantity': 0,
     'category': '',
   };
+  List<dynamic> categories = []; // Danh sách các category
 
   @override
   void initState() {
     super.initState();
     fetchFoods();
+    fetchCategories(); // Tải danh sách category
   }
 
   Future<void> fetchFoods() async {
@@ -42,6 +44,23 @@ class _ListFoodPageState extends State<ListFoodPage> {
       }
     } else {
       throw Exception('Failed to fetch foods');
+    }
+  }
+
+  Future<void> fetchCategories() async {
+    final response =
+        await http.get(Uri.parse('http://192.168.15.109:8000/api/categories'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data is List) {
+        setState(() {
+          categories = data;
+        });
+      } else {
+        throw Exception('Invalid response format');
+      }
+    } else {
+      throw Exception('Failed to fetch categories');
     }
   }
 
@@ -142,9 +161,9 @@ class _ListFoodPageState extends State<ListFoodPage> {
   }
 
   void showToast(String message) {
-// Implement your preferred toast notification here
-// For example, you can use the Fluttertoast package
-// Fluttertoast.showToast(msg: message);
+    // Implement your preferred toast notification here
+    // For example, you can use the Fluttertoast package
+    // Fluttertoast.showToast(msg: message);
   }
 
   void closeModal() {
