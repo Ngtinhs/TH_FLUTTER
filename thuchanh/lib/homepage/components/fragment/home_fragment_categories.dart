@@ -62,9 +62,9 @@ class _CategoriesStoreState extends State<CategoriesStore> {
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            const Row(
+            Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: Text(
                     'Categories',
                     style: TextStyle(
@@ -74,9 +74,16 @@ class _CategoriesStoreState extends State<CategoriesStore> {
                     ),
                   ),
                 ),
-                Text(
-                  'See more',
-                  style: TextStyle(fontSize: 16, color: Colors.lightGreen),
+                IconButton(
+                  icon: const Icon(
+                    Icons.refresh,
+                    color: Colors.lightGreen,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      categoriesFuture = fetchCategories();
+                    });
+                  },
                 ),
               ],
             ),
