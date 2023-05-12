@@ -6,6 +6,7 @@ import UserList from './components/User/UserList';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import CategoriesList from './components/Category/Categories';
+import Revenue from './components/Doanhthu/Doanhthu';
 
 const App = () => {
   return (
@@ -50,6 +51,9 @@ const App = () => {
               <li className="list-group-item">
                 <Link to="/Categories" className="text-decoration-none text-dark">Cate List</Link>
               </li>
+              <li className="list-group-item">
+                <Link to="/Revenue" className="text-decoration-none text-dark">Revenue</Link>
+              </li>
             </ul>
           </div>
 
@@ -59,6 +63,7 @@ const App = () => {
               <Route path="/users" element={<UserList />} />
               <Route path="/orders" element={<OrderList />} />
               <Route path="/Categories" element={<CategoriesList />} />
+              <Route path="/Revenue" element={<Revenue />} />
             </Routes>
           </div>
         </div>

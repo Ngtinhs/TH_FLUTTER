@@ -19,6 +19,31 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/doanhthu', (req, res) => {
+  Order.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: "$total" }
+      }
+    }
+  ])
+    .then((data) => {
+      if (data.length > 0) {
+        const totalRevenue = data[0].totalRevenue;
+        res.send({ totalRevenue });
+      } else {
+        res.send({ totalRevenue: 0 });
+      }
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message: error.message,
+      });
+    });
+});
+
+
 // Lấy chi tiết đơn đặt hàng theo ID
 router.get('/:id', (req, res) => {
   Order.findById(req.params.id)

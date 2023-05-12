@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:demo/homepage.dart';
-import 'package:demo/model/carts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:demo/model/products.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,7 @@ class CheckOutCart extends StatelessWidget {
       "username": username,
       // "address": "16 Chử đồng tử",
       "orderDetails": products.map((e) => ProductUtils.toJson(e)).toList(),
-      "status": "unpaid",
+      // "status": "unpaid",
       "total": sum
     };
 

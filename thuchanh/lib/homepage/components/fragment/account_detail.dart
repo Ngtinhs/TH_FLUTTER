@@ -63,62 +63,65 @@ class _AccountDetailState extends State<AccountDetail> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Edit Account'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: fullnameController,
-                decoration: const InputDecoration(
-                  labelText: 'fullname',
+        return SingleChildScrollView(
+          child: AlertDialog(
+            title: const Text('Edit Account'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: fullnameController,
+                  decoration: const InputDecoration(
+                    labelText: 'fullname',
+                  ),
                 ),
+                TextField(
+                  controller: imageController,
+                  decoration: const InputDecoration(
+                    labelText: 'image',
+                  ),
+                ),
+                TextField(
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Username',
+                  ),
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString('username', usernameController.text);
+                  prefs.setString('password', passwordController.text);
+                  prefs.setString('fullname', fullnameController.text);
+                  prefs.setString('image', imageController.text);
+                  setState(() {
+                    username = usernameController.text;
+                    password = passwordController.text;
+                    fullname = fullnameController.text;
+                    image = imageController.text;
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Save'),
               ),
-              TextField(
-                controller: imageController,
-                decoration: const InputDecoration(
-                  labelText: 'image',
-                ),
-              ),
-              TextField(
-                controller: usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                ),
-              ),
-              TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setString('username', usernameController.text);
-                prefs.setString('password', passwordController.text);
-                prefs.setString('fullname', fullnameController.text);
-                prefs.setString('image', imageController.text);
-                setState(() {
-                  username = usernameController.text;
-                  password = passwordController.text;
-                  fullname = fullnameController.text;
-                  image = imageController.text;
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text('Save'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
         );
       },
     );

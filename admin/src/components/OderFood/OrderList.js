@@ -40,7 +40,7 @@ const OrderList = () => {
                             <strong>Username:</strong> {order.username}<br />
                             <strong>Address:</strong> {order.address}<br />
                             <strong>Total:</strong> {order.total}<br />
-                            <strong>Status:</strong> {order.status}<br />
+                            {/* <strong>Status:</strong> {order.status}<br /> */}
                             <strong>Details:</strong>
                             {Array.isArray(order.orderDetails) && order.orderDetails.length > 0 ? (
                                 <ul>

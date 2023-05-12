@@ -1,3 +1,4 @@
+import 'package:demo/Admin/pages/doanh_thu_page.dart';
 import 'package:demo/Admin/pages/list_cate_page.dart';
 import 'package:flutter/material.dart';
 import './pages/list_order_page.dart';
@@ -49,15 +50,15 @@ class AdminPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, ListFoodPage.routeName);
+                Navigator.pushNamed(context, ListCategoryPage.routeName);
               },
-              child: const Text("Quản lý sản phẩm"),
+              child: const Text("Quản lý danh mục món ăn"),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, ListUserPage.routeName);
+                Navigator.pushNamed(context, ListFoodPage.routeName);
               },
-              child: const Text("Quản lý người dùng"),
+              child: const Text("Quản lý món ăn"),
             ),
             ElevatedButton(
               onPressed: () {
@@ -67,9 +68,15 @@ class AdminPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, ListCategoryPage.routeName);
+                Navigator.pushNamed(context, ListUserPage.routeName);
               },
-              child: const Text("Quản lý danh mục sp"),
+              child: const Text("Quản lý người dùng"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, DoanhthuPage.routeName);
+              },
+              child: const Text("Quản lý doanh thu"),
             ),
           ],
         ),

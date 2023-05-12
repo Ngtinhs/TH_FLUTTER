@@ -1,3 +1,4 @@
+import 'package:demo/Admin/pages/doanh_thu_page.dart';
 import 'package:demo/cart/cartpage.dart';
 import 'package:demo/detail/productpage.dart';
 import 'package:demo/search/searchpage.dart';
@@ -25,4 +26,5 @@ final Map<String, WidgetBuilder> routes = {
   ListFoodPage.routeName: (context) => const ListFoodPage(),
   ListOrderPage.routeName: (context) => const ListOrderPage(),
   ListCategoryPage.routeName: (context) => const ListCategoryPage(),
+  DoanhthuPage.routeName: (context) => const DoanhthuPage(),
 };
