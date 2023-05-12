@@ -70,8 +70,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     _notificationService.initialize();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: routes,
-      title: 'Flutter Demo',
+      title: 'Thực hành Flutter Cô Thảo',
       theme: ThemeData(
         // This is the theme of your application.
         //
