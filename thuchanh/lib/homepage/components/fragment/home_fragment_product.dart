@@ -1,11 +1,10 @@
+import 'package:flutter/material.dart';
+import '../../../detail/productpage.dart';
 import 'package:demo/model/products.dart';
 import 'package:demo/model/utilities.dart';
-import 'package:flutter/material.dart';
-
-import '../../../detail/productpage.dart';
 
 class ProductPopular extends StatefulWidget {
-  const ProductPopular({super.key});
+  const ProductPopular({Key? key}) : super(key: key);
 
   @override
   State<ProductPopular> createState() => _ProductPopularState();
@@ -13,11 +12,26 @@ class ProductPopular extends StatefulWidget {
 
 class _ProductPopularState extends State<ProductPopular> {
   late Future<List<Products>> future;
+  List<Products> currentData = [];
+  bool isLoading = false;
 
   @override
   void initState() {
-    future = Utilities().getProducts();
     super.initState();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final data = await Utilities().getProducts();
+
+    setState(() {
+      currentData = data;
+      isLoading = false;
+    });
   }
 
   @override
@@ -27,50 +41,50 @@ class _ProductPopularState extends State<ProductPopular> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          const Row(
+          Row(
             children: [
-              Expanded(
-                  child: Text(
-                'Popular Products',
-                style: TextStyle(
+              const Expanded(
+                child: Text(
+                  'Popular Products',
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green),
-              )),
-              Text(
-                'See more',
-                style: TextStyle(fontSize: 16, color: Colors.lightGreen),
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.refresh,
+                  color: Colors.lightGreen,
+                ),
+                onPressed: isLoading ? null : loadData,
               ),
             ],
           ),
           const SizedBox(
             height: 10,
           ),
-          FutureBuilder(
-            future: future,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return GridView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: snapshot.data!.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 0.7),
-                    itemBuilder: (context, index) {
-                      return ProductItem(
-                        product: snapshot.data![index],
-                      );
-                    });
-              } else {
-                return const CircularProgressIndicator();
-              }
-            },
-          ),
+          if (currentData.isEmpty)
+            isLoading ? const CircularProgressIndicator() : Container()
+          else
+            GridView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              primary: false,
+              itemCount: currentData.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 0.7,
+              ),
+              itemBuilder: (context, index) {
+                return ProductItem(
+                  product: currentData[index],
+                );
+              },
+            ),
         ],
       ),
     );
@@ -78,19 +92,20 @@ class _ProductPopularState extends State<ProductPopular> {
 }
 
 class ProductItem extends StatelessWidget {
-  Products product;
+  final Products product;
 
-  ProductItem({super.key, required this.product});
-
-  // const ProductItem({Key? key}) : super(key: key);
+  const ProductItem({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Utilities.result.add(product);
-        Navigator.pushNamed(context, ProductPage.routeName,
-            arguments: ProductDetailsArguments(product: product));
+        Navigator.pushNamed(
+          context,
+          ProductPage.routeName,
+          arguments: ProductDetailsArguments(product: product),
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,18 +118,22 @@ class ProductItem extends StatelessWidget {
             children: [
               Expanded(child: Text(product.title)),
               Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(2),
-                      color: Colors.green),
-                  child: Text(
-                    product.price.toString(),
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(2),
+                  color: Colors.green,
+                ),
+                child: Text(
+                  product.price.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );
