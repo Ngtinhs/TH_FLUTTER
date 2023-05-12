@@ -145,7 +145,7 @@ const FoodList = () => {
                         <br />
                         <strong>Description:</strong> {food.description}
                         <br />
-                        <strong>Images:</strong> <img src={`../../../../thuchanh/asset/foods/${food.image}`} alt={food.title} style={{ width: '60px', height: '60px' }} />
+                        <strong>Image:</strong> {food.image}
                         <br />
                         <strong>Price:</strong> {food.price}
                         <br />
