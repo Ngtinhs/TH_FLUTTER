@@ -5,7 +5,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../homepage.dart';
 import '../../model/utilities.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../Admin/adminpage.dart';
+import '../../signup/signup_page.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({Key? key}) : super(key: key);
@@ -195,6 +197,72 @@ class _SignInFormState extends State<SignInForm> {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 40,
+                            width: 40,
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                                color: Color(0xFFF5F6F9),
+                                shape: BoxShape.circle),
+                            child:
+                                SvgPicture.asset("asset/icons/facebook-2.svg"),
+                          ),
+                          Container(
+                            height: 40,
+                            width: 40,
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                                color: Color(0xFFF5F6F9),
+                                shape: BoxShape.circle),
+                            child: SvgPicture.asset("asset/icons/google.svg"),
+                          ),
+                          Container(
+                            height: 40,
+                            width: 40,
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                                color: Color(0xFFF5F6F9),
+                                shape: BoxShape.circle),
+                            child: SvgPicture.asset("asset/icons/twitter.svg"),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Don't have an account ?",
+                          style: TextStyle(color: Colors.green, fontSize: 14),
+                        ),
+                        GestureDetector(
+                            onTap: () async {
+                              // Navigator.pushNamed(
+                              //     context, SignUpPage.routeName);
+                              result = await Navigator.pushNamed(
+                                  context, SignUpPage.routeName);
+                              // User user = result;
+                              // username.text = user.username!;
+                            },
+                            child: const Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  color: Colors.redAccent, fontSize: 14),
+                            ))
+                      ],
+                    )
                   ],
                 ),
               ),

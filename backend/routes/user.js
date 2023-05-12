@@ -11,6 +11,7 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     },
 });
+const upload = multer({ storage });
 
 router.post('/login', async (req, res) => {
     try {
@@ -30,11 +31,10 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
-router.post('/register', async (req, res) => {
+router.post('/register', upload.single('image'), async (req, res) => {
     try {
-        const { username, password, role, fullname } = req.body;
-        const image = req.file ? 'asset/foods/' + req.file.filename : '';
+        const { username, password, fullname } = req.body;
+        const image = req.file ? 'asset/users/' + req.file.filename : '';
 
         const existingUser = await User.findOne({ username });
 
@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
                 password,
                 image,
                 fullname,
-                role: role ? role : 'customer' // Nếu role được cung cấp thì sử dụng giá trị đó, nếu không thì mặc định là 'customer'
+                role: 'customer'
             });
             await newUser.save();
             res.status(201).json({ message: 'Đăng ký thành công' });
@@ -55,8 +55,6 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: 'Đã xảy ra lỗi trong quá trình đăng ký' });
     }
 });
-
-
 // Lấy danh sách người dùng
 router.get('/', async (req, res) => {
     try {

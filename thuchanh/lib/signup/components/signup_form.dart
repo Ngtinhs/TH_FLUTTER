@@ -1,18 +1,79 @@
-import 'package:demo/model/user.dart';
-import 'package:demo/model/utilities.dart';
+import 'package:demo/signin/signinpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart  ';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
-
-  // const SignUpForm({Key? key}) : super(key: key);
+  const SignUpForm({Key? key}) : super(key: key);
 
   @override
   State<SignUpForm> createState() => _SignUpFormState();
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  Future<void> signUp() async {
+    final url = Uri.parse(
+        'http://192.168.15.109:8000/api/users/register'); // Thay YOUR_REGISTER_URL bằng URL đăng ký tương ứng
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'username': email.text,
+        'password': password.text,
+      }),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // Đăng ký thành công
+      // Xử lý phản hồi từ API hoặc máy chủ (nếu cần)
+      // Ví dụ: Hiển thị thông báo thành công và chuyển người dùng đến trang đăng nhập
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Đăng ký thành công'),
+            content: const Text('Bạn đã đăng ký thành công.'),
+            actions: [
+              TextButton(
+                child: const Text('Đóng'),
+                onPressed: () {
+                  Navigator.pop(context); // Đóng hộp thoại
+                  // Chuyển đến trang đăng nhập
+                  Navigator.pushNamed(context, SigninPage.routeName);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Đăng ký thất bại
+      // Xử lý lỗi hoặc hiển thị thông báo lỗi cho người dùng (nếu cần)
+      // Ví dụ: Hiển thị thông báo lỗi
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Đăng ký thất bại'),
+            content: const Text('Đã xảy ra lỗi trong quá trình đăng ký.'),
+            actions: [
+              TextButton(
+                child: const Text('Đóng'),
+                onPressed: () {
+                  Navigator.pop(context); // Đóng hộp thoại
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   var email = TextEditingController();
   final password = TextEditingController();
   final conform = TextEditingController();
@@ -31,7 +92,7 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(
               height: 30,
             ),
-            emalTextFormField(),
+            emailTextFormField(),
             const SizedBox(
               height: 30,
             ),
@@ -49,21 +110,24 @@ class _SignUpFormState extends State<SignUpForm> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.pop(context,
-                        User(username: email.text, password: conform.text));
+                    signUp(); // Gọi phương thức signUp() khi người dùng nhấn nút "Continue"
                   }
                 },
                 style: ButtonStyle(
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                    backgroundColor:
-                        const MaterialStatePropertyAll(Colors.green)),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                ),
                 child: const Text(
                   "Continue",
                   style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -108,21 +172,23 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField emalTextFormField() {
+  TextFormField emailTextFormField() {
     return TextFormField(
-        controller: email,
-        keyboardType: TextInputType.emailAddress,
-        decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "Enter your email",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            suffixIcon: Icon(Icons.email_outlined)),
-        // validator: Utilities.validateEmail,
-        onSaved: (value) {
-          setState(() {
-            email.text = value!;
-          });
-        });
+      controller: email,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: "Enter your email",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Icon(Icons.email_outlined),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter your email';
+        }
+        return null;
+      },
+    );
   }
 
   TextFormField passwordTextFormField() {
@@ -132,12 +198,16 @@ class _SignUpFormState extends State<SignUpForm> {
       obscureText: true,
       keyboardType: TextInputType.number,
       decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: "Enter your password",
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: Icon(Icons.lock_outline)),
-      validator: (passwordKey) {
-        return Utilities.validatePassword(passwordKey!);
+        border: OutlineInputBorder(),
+        hintText: "Enter your password",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Icon(Icons.lock_outline),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter your password';
+        }
+        return null;
       },
     );
   }
@@ -148,18 +218,16 @@ class _SignUpFormState extends State<SignUpForm> {
       obscureText: true,
       keyboardType: TextInputType.number,
       decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: "Re-enter your password",
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: Icon(Icons.lock_outline)),
-      validator: (conformPassword) {
-        var pass = _passKey.currentState?.value;
-        return Utilities.confirmPassword(conformPassword!, pass);
-      },
-      onSaved: (value) {
-        setState(() {
-          conform.text = value!;
-        });
+        border: OutlineInputBorder(),
+        hintText: "Re-enter your password",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Icon(Icons.lock_outline),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please re-enter your password';
+        }
+        return null;
       },
     );
   }
